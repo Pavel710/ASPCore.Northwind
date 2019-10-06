@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Epam.ASPCore.Northwind.Domain.Models;
+﻿using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
+using Epam.ASPCore.Northwind.WebUI.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -37,6 +33,8 @@ namespace Epam.ASPCore.Northwind.WebUI
             services.AddDbContext<NorthwindContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            services.Configure<ProductsSettings>(Configuration.GetSection("ProductsSettings"));
 
             services.AddTransient(typeof(INorthwindRepository<>), typeof(NorthwindRepository<>));
             
