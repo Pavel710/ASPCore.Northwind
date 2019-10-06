@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Epam.ASPCore.Northwind.WebUI.Models.ProductsModel>
+
+@{
+    ViewData["Title"] = "Products Page";
+}
+
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Product Name</th>
+            <th scope="col">QuantityPer Unit</th>
+            <th scope="col">Unit Price</th>
+            <th scope="col">Units In Stock</th>
+            <th scope="col">Units On Order</th>
+            <th scope="col">Reorder Level</th>
+            <th scope="col">Discontinued</th>
+            <th scope="col">Category</th>
+            <th scope="col">Supplier</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>@item.ProductName</th>
+                <th>@item.QuantityPerUnit</th>
+                <th>@item.UnitPrice</th>
+                <th>@item.UnitsInStock</th>
+                <th>@item.UnitsOnOrder</th>
+                <th>@item.ReorderLevel</th>
+                <th>@item.Discontinued</th>
+                <th>@item.Category.CategoryName</th>
+                <th>@item.Supplier.CompanyName</th>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

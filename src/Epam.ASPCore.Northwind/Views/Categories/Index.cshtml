@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Epam.ASPCore.Northwind.WebUI.Models.CategoriesModel>
+
+@{
+    ViewData["Title"] = "Categories Page";
+}
+
+<div>
+    @foreach (var item in Model)
+    {
+        <div>
+            <h3>@item.CategoryName</h3>
+            <p>@item.Description</p>
+        </div>
+    }
+</div>
