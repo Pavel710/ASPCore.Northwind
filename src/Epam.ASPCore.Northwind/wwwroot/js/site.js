@@ -2,3 +2,7 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+$("button.add").on("click",function() {
+    window.location = window.location.href + "\\Add";
+});
