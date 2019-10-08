@@ -1,101 +1,71 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Epam.ASPCore.Northwind.Domain.Models;
-using Epam.ASPCore.Northwind.Domain.Repositories;
-using Epam.ASPCore.Northwind.WebUI.Models;
-using Epam.ASPCore.Northwind.WebUI.Settings;
+﻿using Epam.ASPCore.Northwind.WebUI.Models;
+using Epam.ASPCore.Northwind.WebUI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Options;
 
 namespace Epam.ASPCore.Northwind.WebUI.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly INorthwindRepository<Products> _productsRepository;
-        private readonly INorthwindRepository<Categories> _categoriesRepository;
-        private readonly INorthwindRepository<Suppliers> _supplierRepository;
-        private readonly ProductsSettings _productsSettings;
+        private readonly ICategoryService _categoryService;
+        private readonly IProductService _productService;
+        private readonly ISupplierService _supplierService;
 
-        public ProductsController(INorthwindRepository<Products> productsRepository, INorthwindRepository<Categories> categoriesRepository, INorthwindRepository<Suppliers> supplierRepository, IOptions<ProductsSettings> productsSettings)
+        public ProductsController(ICategoryService categoryService,
+            IProductService productService,
+            ISupplierService supplierService)
         {
-            _productsRepository = productsRepository;
-            _categoriesRepository = categoriesRepository;
-            _supplierRepository = supplierRepository;
-            _productsSettings = productsSettings.Value;
+            _categoryService = categoryService;
+            _productService = productService;
+            _supplierService = supplierService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var categories = _categoriesRepository.Get();
-            var suppliers = _supplierRepository.Get();
-            var products = _productsRepository.Get();
-
-            var productsModel = products.Select(p => new ProductsModel
-            {
-                Discontinued = p.Discontinued,
-                ReorderLevel = p.ReorderLevel,
-                ProductId = p.ProductId,
-                ProductName = p.ProductName,
-                QuantityPerUnit = p.QuantityPerUnit,
-                UnitPrice = p.UnitPrice,
-                UnitsInStock = p.UnitsInStock,
-                UnitsOnOrder = p.UnitsOnOrder,
-                Category = categories.Where(c => c.CategoryId == p.CategoryId).Select(nc => new CategoriesModel()
-                {
-                    CategoryId = nc.CategoryId,
-                    CategoryName = nc.CategoryName
-                }).FirstOrDefault(),
-                Supplier = suppliers.Where(s => s.SupplierId == p.SupplierId).Select(ns => new SuppliersModel()
-                {
-                    SupplierId = ns.SupplierId,
-                    CompanyName = ns.CompanyName
-                }).FirstOrDefault()
-            }).Take(_productsSettings.Maximum == 0 ? products.ToList().Count : _productsSettings.Maximum);
-
-            return View(productsModel);
+            return View(_productService.GetProductsModelList());
         }
 
         [HttpGet]
         public IActionResult Add()
         {
-            ViewBag.Categories = GetCategoriesSelectedList(_categoriesRepository.Get().ToList());
-            return View();
+            ViewBag.Mod = "Add";
+            ViewBag.Categories = _categoryService.GetCategoriesSelectedList();
+            ViewBag.Suppliers = _supplierService.GetSuppliersSelectedList();
+            return View("ProductForm");
         }
 
         [HttpPost]
         public IActionResult Add(ProductsModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Add");
+            }
+
+            _productService.SaveProduct(model);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public IActionResult Update(int productId)
+        public IActionResult Update(int id)
         {
-            return View();
+            ViewBag.Mod = "Update";
+            var model = _productService.GetProduct(id);
+            ViewBag.Categories = _categoryService.GetCategoriesSelectedList(model.Category?.CategoryId);
+            ViewBag.Suppliers = _supplierService.GetSuppliersSelectedList(model.Supplier?.SupplierId);
+            return View("ProductForm", model);
         }
 
         [HttpPost]
         public IActionResult Update(ProductsModel model)
         {
-            return RedirectToAction("Index");
-        }
-
-        private List<SelectListItem> GetCategoriesSelectedList(IList<Categories> data)
-        {
-            List<SelectListItem> list = new List<SelectListItem>();
-
-            foreach (var category in data)
+            if (!ModelState.IsValid)
             {
-                list.Add(new SelectListItem
-                {
-                    Value = category.CategoryId.ToString(),
-                    Text = category.CategoryName
-                });
+                return RedirectToAction("Update");
             }
 
-            return list;
+            _productService.UpdateProduct(model);
+            return RedirectToAction("Index");
         }
     }
 }

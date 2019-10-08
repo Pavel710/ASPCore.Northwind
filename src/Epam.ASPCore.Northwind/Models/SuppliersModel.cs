@@ -7,6 +7,16 @@ namespace Epam.ASPCore.Northwind.WebUI.Models
 {
     public class SuppliersModel
     {
+        public SuppliersModel()
+        {
+            
+        }
+
+        public SuppliersModel(int supplierId)
+        {
+            SupplierId = supplierId;
+        }
+
         public int SupplierId { get; set; }
         public string CompanyName { get; set; }
         public string ContactName { get; set; }

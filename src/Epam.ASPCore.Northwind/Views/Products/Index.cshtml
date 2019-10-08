@@ -5,9 +5,8 @@
 }
 
 <div>
-    <div class="row text-right">
-        <button type="button" class="btn btn-primary col-xs-6 add">Add</button>
-        <button type="button" class="btn btn-primary col-xs-6 update">Update</button>
+    <div class="text-right">
+        <button type="button" class="btn btn-primary add" onclick="AddItem()">Add</button>
     </div>
     <table class="table">
         <thead>
@@ -21,12 +20,13 @@
             <th scope="col">Discontinued</th>
             <th scope="col">Category</th>
             <th scope="col">Supplier</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr id="@item.ProductId">
                 <th>@item.ProductName</th>
                 <th>@item.QuantityPerUnit</th>
                 <th>@item.UnitPrice</th>
@@ -36,6 +36,7 @@
                 <th>@item.Discontinued</th>
                 <th>@item.Category.CategoryName</th>
                 <th>@item.Supplier.CompanyName</th>
+                <th><button type="button" class="btn btn-primary update" onclick="UpdateItem(this)">Update</button></th>
             </tr>
         }
         </tbody>

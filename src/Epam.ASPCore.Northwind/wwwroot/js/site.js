@@ -3,6 +3,15 @@
 
 // Write your JavaScript code.
 
-$("button.add").on("click",function() {
+function AddItem() {
     window.location = window.location.href + "\\Add";
-});
+};
+
+function UpdateItem(btn) {
+    var id = $(btn).parent().parent()[0].id;
+    window.location = window.location.href + "\\Update?id=" + id;
+};
+
+function CancelAction() {
+    window.history.back();
+};
