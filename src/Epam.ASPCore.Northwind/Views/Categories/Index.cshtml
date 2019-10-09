@@ -4,12 +4,32 @@
     ViewData["Title"] = "Categories Page";
 }
 
-<div>
-    @foreach (var item in Model)
-    {
-        <div>
-            <h3>@item.CategoryName</h3>
-            <p>@item.Description</p>
+
+<section class="page-top-section set-bg" data-setbg="./images/template/page-top-bg.jpg">
+    <div class="container">
+        <h2>Categories</h2>
+        <div class="site-breadcrumb">
+            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a> / <span>Categories</span>
         </div>
-    }
-</div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="section-title">
+            <h2>Categories</h2>
+        </div>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-3 col-md-6">
+                    <div class="team-member">
+                        <img src="./images/Product_category.png">
+                        <h4>@item.CategoryName</h4>
+                        <p>@item.Description</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

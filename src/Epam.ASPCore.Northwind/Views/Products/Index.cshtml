@@ -4,41 +4,57 @@
     ViewData["Title"] = "Products Page";
 }
 
-<div>
-    <div class="text-right">
-        <button type="button" class="btn btn-primary add" onclick="AddItem()">Add</button>
+<section class="page-top-section set-bg" data-setbg="./images/template/page-top-bg.jpg">
+    <div class="container">
+        <h2>Products</h2>
+        <div class="site-breadcrumb">
+            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a> / <span>Products</span>
+        </div>
     </div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Product Name</th>
-            <th scope="col">QuantityPer Unit</th>
-            <th scope="col">Unit Price</th>
-            <th scope="col">Units In Stock</th>
-            <th scope="col">Units On Order</th>
-            <th scope="col">Reorder Level</th>
-            <th scope="col">Discontinued</th>
-            <th scope="col">Category</th>
-            <th scope="col">Supplier</th>
-            <th scope="col">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model)
-        {
-            <tr id="@item.ProductId">
-                <th>@item.ProductName</th>
-                <th>@item.QuantityPerUnit</th>
-                <th>@item.UnitPrice</th>
-                <th>@item.UnitsInStock</th>
-                <th>@item.UnitsOnOrder</th>
-                <th>@item.ReorderLevel</th>
-                <th>@item.Discontinued</th>
-                <th>@item.Category.CategoryName</th>
-                <th>@item.Supplier.CompanyName</th>
-                <th><button type="button" class="btn btn-primary update" onclick="UpdateItem(this)">Update</button></th>
-            </tr>
-        }
-        </tbody>
-    </table>
-</div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="section-title">
+            <h2>Products</h2>
+        </div>
+        <div class="text-right button-section">
+            <button type="button" class="btn btn-primary btn-rounded add" onclick="AddItem()">Add</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-grey table-hover-white">
+                <thead>
+                <tr>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">QuantityPer Unit</th>
+                    <th scope="col">Unit Price</th>
+                    <th scope="col">Units In Stock</th>
+                    <th scope="col">Units On Order</th>
+                    <th scope="col">Reorder Level</th>
+                    <th scope="col">Discontinued</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Supplier</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr id="@item.ProductId">
+                        <th>@item.ProductName</th>
+                        <th>@item.QuantityPerUnit</th>
+                        <th>@item.UnitPrice</th>
+                        <th>@item.UnitsInStock</th>
+                        <th>@item.UnitsOnOrder</th>
+                        <th>@item.ReorderLevel</th>
+                        <th>@item.Discontinued</th>
+                        <th>@item.Category.CategoryName</th>
+                        <th>@item.Supplier.CompanyName</th>
+                        <th><button type="button" class="btn btn-primary btn-rounded update" onclick="UpdateItem(this)">Update</button></th>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
