@@ -17,6 +17,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <form class="form" method="post" asp-controller="Products" asp-action="@ViewBag.Mod">
+                    <div asp-validation-summary="All"></div>
                     @if (ViewBag.Mod == "Update")
                     {
                         <input asp-for="ProductId" type="hidden" value="@Model.ProductId">
@@ -25,36 +26,42 @@
                         <label class="col-sm-2">Product Name:</label>
                         <div class="col-sm-10">
                             <input asp-for="ProductName" class="form-control" placeholder="Enter name">
+                            <span asp-validation-for="ProductName"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2">Quantity Per Unit:</label>
                         <div class="col-sm-10">
                             <input asp-for="QuantityPerUnit" class="form-control" placeholder="Enter quantity">
+                            <span asp-validation-for="QuantityPerUnit"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2">Unit Price:</label>
                         <div class="col-sm-10">
                             <input asp-for="UnitPrice" class="form-control" placeholder="Enter price">
+                            <span asp-validation-for="UnitPrice"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2">Units In Stock:</label>
                         <div class="col-sm-10">
                             <input asp-for="UnitsInStock" class="form-control" placeholder="Enter number">
+                            <span asp-validation-for="UnitsInStock"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2">Units On Order:</label>
                         <div class="col-sm-10">
                             <input asp-for="UnitsOnOrder" class="form-control" placeholder="Enter number">
+                            <span asp-validation-for="UnitsOnOrder"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2">Reorder Level:</label>
                         <div class="col-sm-10">
                             <input asp-for="ReorderLevel" class="form-control" placeholder="Enter level">
+                            <span asp-validation-for="ReorderLevel"></span>
                         </div>
                     </div>
                     <div class="form-group">

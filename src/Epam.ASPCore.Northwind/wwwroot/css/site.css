@@ -67,6 +67,10 @@ table.table-grey thead tr {
     box-shadow: 0 0 0 0.2rem rgba(0, 173, 95, 0.5);
 }
 
+/* ----------------
+  Form
+---------------------*/
+
 .form {
     padding-top: 30px;
 }
@@ -90,4 +94,31 @@ table.table-grey thead tr {
 
 .form input[type=checkbox] {
     margin-bottom: 0px;
+}
+
+/* ----------------
+  Validation
+---------------------*/
+
+.field-validation-error {
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #e80c4d;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.validation-summary-valid {
+    display: none;
 }

@@ -11,6 +11,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Models
         public string ProductName { get; set; }
         [Required]
         public string QuantityPerUnit { get; set; }
+        [Required]
         [Range(0, 9999.99)]
         public decimal? UnitPrice { get; set; }
         public short? UnitsInStock { get; set; }
