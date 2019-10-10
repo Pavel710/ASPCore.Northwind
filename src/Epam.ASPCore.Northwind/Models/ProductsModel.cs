@@ -6,15 +6,16 @@ namespace Epam.ASPCore.Northwind.WebUI.Models
     public class ProductsModel
     {
         public int ProductId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "The product name field is required.")]
         [StringLength(100)]
         public string ProductName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "The quantity per unit field is required.")]
         public string QuantityPerUnit { get; set; }
-        [Required]
         [Range(0, 9999.99)]
         public decimal? UnitPrice { get; set; }
+        [Range(0, 100)]
         public short? UnitsInStock { get; set; }
+        [Range(0, 50)]
         public short? UnitsOnOrder { get; set; }
         public short? ReorderLevel { get; set; }
         public bool Discontinued { get; set; }
