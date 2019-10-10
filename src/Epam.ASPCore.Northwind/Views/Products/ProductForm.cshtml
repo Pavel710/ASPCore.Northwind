@@ -3,76 +3,92 @@
     ViewData["Title"] = "Product form";
 }
 
-<div class="container">
-    <h2>Product form</h2>
-    <form class="form-horizontal" method="post" asp-controller="Products" asp-action="@ViewBag.Mod">
-        @if (ViewBag.Mod == "Update")
-        {
-            <input asp-for="ProductId" type="hidden" value="@Model.ProductId">
-        }
-        <div class="form-group">
-            <label class="control-label col-sm-2">Product Name:</label>
-            <div class="col-sm-10">
-                <input asp-for="ProductName" class="form-control" placeholder="Enter name">
-            </div>
+<section class="page-top-section set-bg" data-setbg="../images/template/page-top-bg.jpg">
+    <div class="container">
+        <h2>Product form</h2>
+        <div class="site-breadcrumb">
+            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a> / <a asp-area="" asp-controller="Products" asp-action="Index">Products</a> / <span>Product form</span>
         </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2">Quantity Per Unit:</label>
-            <div class="col-sm-10">
-                <input asp-for="QuantityPerUnit" class="form-control" placeholder="Enter quantity">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2">Unit Price:</label>
-            <div class="col-sm-10">
-                <input asp-for="UnitPrice" class="form-control" placeholder="Enter price">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2">Units In Stock:</label>
-            <div class="col-sm-10">
-                <input asp-for="UnitsInStock" class="form-control" placeholder="Enter number">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2">Units On Order:</label>
-            <div class="col-sm-10">
-                <input asp-for="UnitsOnOrder" class="form-control" placeholder="Enter number">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2">Reorder Level:</label>
-            <div class="col-sm-10">
-                <input asp-for="ReorderLevel" class="form-control" placeholder="Enter level">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <div class="checkbox">
-                    <label><input type="checkbox" asp-for="Discontinued"> Discontinued</label>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <label>Category:</label>
-                <select asp-for="Category.CategoryId" asp-items="ViewBag.Categories"></select>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <label>Supplier:</label>
-                <select asp-for="Supplier.SupplierId" asp-items="ViewBag.Suppliers"></select>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-success">@ViewBag.Mod</button>
-            </div>
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="button" class="btn btn-primary" onclick="CancelAction()">Cancel</button>
-            </div>
-        </div>
-    </form>
-</div>
+    </div>
+</section>
 
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <form class="form" method="post" asp-controller="Products" asp-action="@ViewBag.Mod">
+                    @if (ViewBag.Mod == "Update")
+                    {
+                        <input asp-for="ProductId" type="hidden" value="@Model.ProductId">
+                    }
+                    <div class="form-group">
+                        <label class="col-sm-2">Product Name:</label>
+                        <div class="col-sm-10">
+                            <input asp-for="ProductName" class="form-control" placeholder="Enter name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">Quantity Per Unit:</label>
+                        <div class="col-sm-10">
+                            <input asp-for="QuantityPerUnit" class="form-control" placeholder="Enter quantity">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">Unit Price:</label>
+                        <div class="col-sm-10">
+                            <input asp-for="UnitPrice" class="form-control" placeholder="Enter price">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">Units In Stock:</label>
+                        <div class="col-sm-10">
+                            <input asp-for="UnitsInStock" class="form-control" placeholder="Enter number">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">Units On Order:</label>
+                        <div class="col-sm-10">
+                            <input asp-for="UnitsOnOrder" class="form-control" placeholder="Enter number">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">Reorder Level:</label>
+                        <div class="col-sm-10">
+                            <input asp-for="ReorderLevel" class="form-control" placeholder="Enter level">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">Discontinued:</label>
+                        <div class="col-sm-1">
+                            <div class="form-check-label">
+                                <input type="checkbox" asp-for="Discontinued">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">Category:</label>
+                        <div class="col-sm-10">
+                            <select asp-for="Category.CategoryId" asp-items="ViewBag.Categories"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">Supplier:</label>
+                        <div class="col-sm-10">
+                            <select asp-for="Supplier.SupplierId" asp-items="ViewBag.Suppliers"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row col-sm-10">
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-success btn-rounded">@ViewBag.Mod</button>
+                            </div>
+                            <div class="col-md-8">
+                                <button type="button" class="btn btn-primary btn-rounded" onclick="CancelAction()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
