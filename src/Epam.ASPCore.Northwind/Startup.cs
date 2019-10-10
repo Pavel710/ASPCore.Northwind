@@ -52,7 +52,7 @@ namespace Epam.ASPCore.Northwind.WebUI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger, ILoggerFactory loggerFactor)
         {
-            loggerFactor.AddFile($".../Logs/{env.ApplicationName}-{DateTime.Now:dd-MM-yy}.txt");
+            //loggerFactor.AddFile($"Logs/{env.ApplicationName}-{DateTime.Now:dd-MM-yy}.txt");
             logger.LogInformation("Start" + env.ApplicationName + " Application!" + Environment.NewLine +
                                   "Application location - " + env.ContentRootPath);
             
