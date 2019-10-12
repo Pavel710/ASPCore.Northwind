@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
 using Epam.ASPCore.Northwind.WebUI.Services;
@@ -11,8 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Primitives;
+using Serilog;
 
 namespace Epam.ASPCore.Northwind.WebUI
 {
@@ -50,12 +48,12 @@ namespace Epam.ASPCore.Northwind.WebUI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger, ILoggerFactory loggerFactor)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //loggerFactor.AddFile($"Logs/{env.ApplicationName}-{DateTime.Now:dd-MM-yy}.txt");
-            logger.LogInformation("Start" + env.ApplicationName + " Application!" + Environment.NewLine +
-                                  "Application location - " + env.ContentRootPath);
-            
+            Log.Information("Start " + env.ApplicationName + " Application!" + Environment.NewLine +
+                            "Application location - " + env.ContentRootPath);
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

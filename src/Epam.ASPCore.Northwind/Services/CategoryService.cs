@@ -4,20 +4,17 @@ using System.Linq;
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Epam.ASPCore.Northwind.WebUI.Services
 {
     public class CategoryService : ICategoryService
     {
         private readonly INorthwindRepository<Categories> _categoriesRepository;
-        private readonly ILogger _logger;
 
-        public CategoryService(INorthwindRepository<Categories> categoriesRepository,
-            ILogger logger)
+        public CategoryService(INorthwindRepository<Categories> categoriesRepository)
         {
             _categoriesRepository = categoriesRepository;
-            _logger = logger;
         }
 
         public List<SelectListItem> GetCategoriesSelectedList(int? selectedItemId = null)
@@ -42,7 +39,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Category service error!");
+                Log.Error("Category service error!" + Environment.NewLine + $"{e}");
                 throw;
             }
         }

@@ -5,19 +5,17 @@ using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Epam.ASPCore.Northwind.WebUI.Services
 {
     public class SupplierService : ISupplierService
     {
         private readonly INorthwindRepository<Suppliers> _supplierRepository;
-        private readonly ILogger _logger;
 
-        public SupplierService(INorthwindRepository<Suppliers> supplierRepository,
-            ILogger logger)
+        public SupplierService(INorthwindRepository<Suppliers> supplierRepository)
         {
             _supplierRepository = supplierRepository;
-            _logger = logger;
         }
 
         public List<SelectListItem> GetSuppliersSelectedList(int? selectedItemId = null)
@@ -42,7 +40,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Supplier service error!");
+                Log.Error("Supplier service error!" + Environment.NewLine + $"{e}");
                 throw;
             }
         }

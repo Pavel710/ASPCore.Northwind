@@ -5,8 +5,8 @@ using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
 using Epam.ASPCore.Northwind.WebUI.Models;
 using Epam.ASPCore.Northwind.WebUI.Settings;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace Epam.ASPCore.Northwind.WebUI.Services
 {
@@ -16,19 +16,17 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
         private readonly INorthwindRepository<Categories> _categoriesRepository;
         private readonly INorthwindRepository<Suppliers> _supplierRepository;
         private readonly ProductsSettings _productsSettings;
-        private readonly ILogger _logger;
 
         public ProductService(INorthwindRepository<Products> productsRepository,
             INorthwindRepository<Categories> categoriesRepository,
             INorthwindRepository<Suppliers> supplierRepository,
-            IOptions<ProductsSettings> productsSettings,
-            ILogger logger)
+            IOptions<ProductsSettings> productsSettings)
         {
             _productsRepository = productsRepository;
             _categoriesRepository = categoriesRepository;
             _supplierRepository = supplierRepository;
-            _logger = logger;
             _productsSettings = productsSettings.Value;
+            Log.Information("Read configuration: " + nameof(_productsSettings.Maximum) + ": " + _productsSettings.Maximum);
         }
 
         public List<ProductsModel> GetProductsModelList()
@@ -64,7 +62,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Product service error!");
+                Log.Error("Product service error!" + Environment.NewLine + $"{e}");
                 throw;
             }
         }
@@ -90,7 +88,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Product service error!");
+                Log.Error("Product service error!" + Environment.NewLine + $"{e}");
                 throw;
             }
         }
@@ -116,7 +114,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Product service error!");
+                Log.Error("Product service error!" + Environment.NewLine + $"{e}");
                 throw;
             }
         }
@@ -140,7 +138,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Product service error!");
+                Log.Error("Product service error!" + Environment.NewLine + $"{e}");
                 throw;
             }
         }
