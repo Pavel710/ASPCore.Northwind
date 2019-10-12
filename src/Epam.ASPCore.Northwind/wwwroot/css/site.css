@@ -63,14 +63,34 @@ table.table-grey thead tr {
     border-color: #00ad5f;
 }
 
-.btn-rounded-primary:focus, .btn-primary.focus {
+.btn-rounded-primary:focus, .btn-rounded-primary.focus {
     box-shadow: 0 0 0 0.2rem rgba(0, 173, 95, 0.5);
+}
+
+/* ----------------
+  Button hamburger
+---------------------*/
+
+.btn-hamburger {
+    color: white;
+    font-size: 1.25rem;
+}
+
+.btn-hamburger:hover {
+    color: #eb2b63;
+}
+
+.btn-hamburger:focus, .btn-hamburger.focus {
+    box-shadow: none;
+}
+
+.dropdown.show .btn-hamburger {
+    color: #eb2b63;
 }
 
 /* ----------------
   Form
 ---------------------*/
-
 .form {
     padding-top: 30px;
 }

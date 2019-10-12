@@ -545,15 +545,19 @@ ol {
 	padding-top: 25px;
 }
 
+.main-menu-hamburger {
+    padding-top: 15px;
+}
+
 .main-menu li {
-	display: inline;
+    display: inline;
 }
 
 .main-menu li a {
 	display: inline-block;
 	font-size: 16px;
-	color: #fff;
-	margin-left: 50px;
+	/*color: #fff;*/
+	/*margin-left: 50px;*/
 	-webkit-transition: all 0.4s;
 	-o-transition: all 0.4s;
 	transition: all 0.4s;
