@@ -4,7 +4,6 @@ using System.Linq;
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace Epam.ASPCore.Northwind.WebUI.Services

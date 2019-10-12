@@ -1,9 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
-using Serilog.Events;
-using Serilog.Formatting.Compact;
 
 namespace Epam.ASPCore.Northwind.WebUI
 {

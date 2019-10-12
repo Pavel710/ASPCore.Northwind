@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Epam.ASPCore.Northwind.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -58,14 +56,7 @@ namespace Epam.ASPCore.Northwind.Domain.Repositories
 
         protected DbSet<TEntity> Entities
         {
-            get
-            {
-                if (_entities == null)
-                {
-                    _entities = _context.Set<TEntity>();
-                }
-                return _entities;
-            }
+            get { return _entities ?? (_entities = _context.Set<TEntity>()); }
         }
     }
 }

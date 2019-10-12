@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
 using Epam.ASPCore.Northwind.WebUI.Models;

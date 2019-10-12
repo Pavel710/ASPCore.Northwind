@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Epam.ASPCore.Northwind.WebUI.Models
+﻿namespace Epam.ASPCore.Northwind.WebUI.Models
 {
     public class ErrorViewModel
     {
