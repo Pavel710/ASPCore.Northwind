@@ -29,6 +29,10 @@
     }
 }
 
+.main-page-section {
+  min-height: 100%;
+}
+
 table.table-grey {
     background-color: #222222;
     color: #808080;

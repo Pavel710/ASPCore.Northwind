@@ -11,7 +11,7 @@ namespace Epam.ASPCore.Northwind.WebUI
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .Enrich.FromLogContext()
-                .WriteTo.File("D:\\ASP.NET Core\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.File("D:\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
 
             try
