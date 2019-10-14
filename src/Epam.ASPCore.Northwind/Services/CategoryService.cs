@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
+using Epam.ASPCore.Northwind.WebUI.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Serilog;
 
@@ -36,6 +37,24 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
                 }
 
                 return list;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Category service error!" + Environment.NewLine + $"{e}");
+                throw;
+            }
+        }
+
+        public List<CategoriesModel> GetCategories()
+        {
+            try
+            {
+                return _categoriesRepository.Get().Select(i => new CategoriesModel
+                {
+                    CategoryId = i.CategoryId,
+                    Description = i.Description,
+                    CategoryName = i.CategoryName
+                }).ToList();
             }
             catch (Exception e)
             {

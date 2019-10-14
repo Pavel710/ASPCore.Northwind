@@ -1,30 +1,21 @@
-﻿using System.Linq;
-using Epam.ASPCore.Northwind.Domain.Models;
-using Epam.ASPCore.Northwind.Domain.Repositories;
-using Epam.ASPCore.Northwind.WebUI.Models;
+﻿using Epam.ASPCore.Northwind.WebUI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Epam.ASPCore.Northwind.WebUI.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly INorthwindRepository<Categories> _repository;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(INorthwindRepository<Categories> repository)
+        public CategoriesController(ICategoryService categoryService)
         {
-            _repository = repository;
+            _categoryService = categoryService;
         }
-        
+
+        [HttpGet]
         public IActionResult Index()
         {
-            var items = _repository.Get().Select(i => new CategoriesModel
-            {
-                CategoryId = i.CategoryId,
-                Description = i.Description,
-                CategoryName = i.CategoryName
-            }).ToList();
-
-            return View(items);
+            return View(_categoryService.GetCategories());
         }
     }
 }
