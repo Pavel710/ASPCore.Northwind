@@ -16,9 +16,13 @@ namespace Epam.ASPCore.Northwind.WebUI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly string _contentRootPath;
+
+        public Startup(IConfiguration configuration,
+            IHostingEnvironment env)
         {
             Configuration = configuration;
+            _contentRootPath = env.ContentRootPath;
         }
 
         public IConfiguration Configuration { get; }
@@ -33,9 +37,13 @@ namespace Epam.ASPCore.Northwind.WebUI
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<NorthwindContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            if (connectionString.Contains("%CONTENTROOTPATH%"))
+            {
+                connectionString = connectionString.Replace("%CONTENTROOTPATH%", _contentRootPath);
+            }
+            services.AddDbContext<NorthwindContext>(options => 
+                options.UseSqlServer(connectionString));
 
             services.Configure<ProductsSettings>(Configuration.GetSection("ProductsSettings"));
 
@@ -52,7 +60,6 @@ namespace Epam.ASPCore.Northwind.WebUI
         {
             Log.Information("Start " + env.ApplicationName + " Application!" + Environment.NewLine +
                             "Application location - " + env.ContentRootPath);
-
 
             if (env.IsDevelopment())
             {
