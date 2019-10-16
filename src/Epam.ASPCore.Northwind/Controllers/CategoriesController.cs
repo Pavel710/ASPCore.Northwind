@@ -1,4 +1,5 @@
-﻿using Epam.ASPCore.Northwind.WebUI.Services;
+﻿using System.IO;
+using Epam.ASPCore.Northwind.WebUI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Epam.ASPCore.Northwind.WebUI.Controllers
@@ -16,6 +17,17 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         public IActionResult Index()
         {
             return View(_categoryService.GetCategories());
+        }
+
+        [HttpGet]
+        public IActionResult GetImage(int id)
+        {
+            Stream categoryImageStream = _categoryService.GetCategoryImageStream(id);
+
+            if (categoryImageStream.Length == 0)
+                return NotFound();
+
+            return File(categoryImageStream, "application/octet-stream");
         }
     }
 }

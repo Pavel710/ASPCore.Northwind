@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
@@ -55,6 +56,19 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
                     Description = i.Description,
                     CategoryName = i.CategoryName
                 }).ToList();
+            }
+            catch (Exception e)
+            {
+                Log.Error("Category service error!" + Environment.NewLine + $"{e}");
+                throw;
+            }
+        }
+
+        public Stream GetCategoryImageStream(int categoryId)
+        {
+            try
+            {
+                return new MemoryStream(_categoriesRepository.GetByID(categoryId).Picture.Skip(78).ToArray());
             }
             catch (Exception e)
             {
