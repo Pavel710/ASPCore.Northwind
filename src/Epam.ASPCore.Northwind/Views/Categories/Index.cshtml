@@ -23,8 +23,8 @@
             @foreach (var item in Model)
             {
                 <div class="col-lg-3 col-md-6">
-                    <div class="team-member">
-                        <img src="@Url.Action("GetImage", new { id = item.CategoryId })" alt="Image" />
+                    <div class="team-member" id="@item.CategoryId">
+                        <img src="@Url.Action("GetImage", new {id = item.CategoryId})" class="img-hover-zoom" onclick="UploadImage(this)" alt="Image" />
                         <h4>@item.CategoryName</h4>
                         <p>@item.Description</p>
                     </div>
@@ -33,3 +33,13 @@
         </div>
     </div>
 </section>
+
+@section Scripts
+{
+    <script>
+        function UploadImage(el) {
+            var id = $(el).parent()[0].id;
+            window.location = window.location.href + "\\UploadImage?categoryId=" + id;
+        }
+    </script>
+}

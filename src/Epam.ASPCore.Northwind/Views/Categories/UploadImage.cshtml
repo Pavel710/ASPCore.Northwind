@@ -1,0 +1,101 @@
+﻿@model Epam.ASPCore.Northwind.WebUI.Models.CategoriesModel
+@{
+    ViewData["Title"] = "Upload Category Image";
+}
+
+<section class="page-top-section set-bg" data-setbg="../images/template/page-top-bg.jpg">
+    <div class="container">
+        <h2>Upload category image</h2>
+        <div class="site-breadcrumb">
+            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a> / <a asp-area="" asp-controller="Categories" asp-action="Index">Products</a> / <span>Upload category image</span>
+        </div>
+    </div>
+</section>
+
+<section class="main-page-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <form class="form" method="post" asp-controller="Categories" asp-action="UploadImage" enctype="multipart/form-data">
+                    <div asp-validation-summary="All"></div>
+                    <input asp-for="CategoryId" type="hidden" value="@Model.CategoryId">
+
+                    <div class="file-upload">
+                        <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+
+                        <div class="image-upload-wrap">
+                            <input class="file-upload-input" type='file' name="uploadedImage" onchange="readURL(this);" accept="image/*" />
+                            <div class="drag-text">
+                                <h3>Drag and drop a file or select add Image</h3>
+                            </div>
+                        </div>
+                        <div class="file-upload-content">
+                            <img class="file-upload-image" id="uploadedImage" src="#" alt="your image" />
+                            <div class="image-title-wrap">
+                                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row col-sm-10">
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-success btn-rounded">Upload</button>
+                            </div>
+                            <div class="col-md-8">
+                                <button type="button" class="btn btn-primary btn-rounded" onclick="CancelAction()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts
+{
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.image-upload-wrap').hide();
+
+                    $('.file-upload-image').attr('src', e.target.result);
+                    $('.file-upload-content').show();
+
+                    $('.image-title').html(input.files[0].name);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+
+            } else {
+                removeUpload();
+            }
+        }
+
+        function removeUpload() {
+            $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+            $('.file-upload-content').hide();
+            $('.image-upload-wrap').show();
+        }
+        $('.image-upload-wrap').bind('dragover', function () {
+            $('.image-upload-wrap').addClass('image-dropping');
+        });
+        $('.image-upload-wrap').bind('dragleave', function () {
+            $('.image-upload-wrap').removeClass('image-dropping');
+        });
+
+        //$("form.form").submit(function(e) {
+        //    e.preventDefault();
+        //    var formData = new FormData(this);    
+        //    var base64image = $('#uploadedImage').attr('src');
+
+        //    $.post($(this).attr("action"), formData);
+        //});
+    </script>   
+}
