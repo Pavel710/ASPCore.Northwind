@@ -16,33 +16,35 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <form class="form" method="post" asp-controller="Categories" asp-action="UploadImage" enctype="multipart/form-data">
+                <form method="post" asp-controller="Categories" asp-action="UploadImage" enctype="multipart/form-data">
                     <div asp-validation-summary="All"></div>
                     <input asp-for="CategoryId" type="hidden" value="@Model.CategoryId">
+                    
+                    <div class="form-group">
+                        <div class="file-upload">
+                            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
 
-                    <div class="file-upload">
-                        <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
-
-                        <div class="image-upload-wrap">
-                            <input class="file-upload-input" type='file' name="uploadedImage" onchange="readURL(this);" accept="image/*" />
-                            <div class="drag-text">
-                                <h3>Drag and drop a file or select add Image</h3>
+                            <div class="image-upload-wrap">
+                                <input class="file-upload-input" type='file' name="uploadedImage" onchange="readURL(this);" accept="image/*" />
+                                <div class="drag-text">
+                                    <h3>Drag and drop a file or select add Image</h3>
+                                </div>
                             </div>
-                        </div>
-                        <div class="file-upload-content">
-                            <img class="file-upload-image" id="uploadedImage" src="#" alt="your image" />
-                            <div class="image-title-wrap">
-                                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                            <div class="file-upload-content">
+                                <img class="file-upload-image" id="uploadedImage" src="#" alt="your image" />
+                                <div class="image-title-wrap">
+                                    <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="row col-sm-10">
-                            <div class="col-md-2">
+                        <div class="row col-sm-12">
+                            <div class="col-md-6" style="text-align: right">
                                 <button type="submit" class="btn btn-success btn-rounded">Upload</button>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-6" style="text-align: left">
                                 <button type="button" class="btn btn-primary btn-rounded" onclick="CancelAction()">Cancel</button>
                             </div>
                         </div>
