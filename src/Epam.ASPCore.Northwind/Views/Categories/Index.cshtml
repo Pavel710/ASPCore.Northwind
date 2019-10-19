@@ -24,7 +24,8 @@
             {
                 <div class="col-lg-3 col-md-6">
                     <div class="team-member" id="@item.CategoryId">
-                        <img src="@Url.Action("GetImage", new {id = item.CategoryId})" class="img-hover-zoom category-img" onclick="UploadImage(this)" alt="Image" />
+                        @*<img src="@Url.Action("GetImage", new {id = item.CategoryId})" class="img-hover-zoom category-img" onclick="UploadImage(this)" alt="Image" />*@
+                        <img src="@Url.Action($"{item.CategoryId}", "images", null)" class="img-hover-zoom category-img" onclick="UploadImage(this)" alt="Image" />
                         <h4>@item.CategoryName</h4>
                         <p>@item.Description</p>
                     </div>

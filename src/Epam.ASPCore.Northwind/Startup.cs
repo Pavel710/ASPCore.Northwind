@@ -80,6 +80,8 @@ namespace Epam.ASPCore.Northwind.WebUI
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute("images", "images/{id}",
+                    defaults: new { controller = "Categories", action = "GetImage" });
             });
         }
     }
