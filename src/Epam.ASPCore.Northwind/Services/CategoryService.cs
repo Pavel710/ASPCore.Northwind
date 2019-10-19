@@ -71,7 +71,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
         {
             try
             {
-                return new MemoryStream(_categoriesRepository.GetByID(categoryId).Picture.Skip(78).ToArray());
+                return new MemoryStream(_categoriesRepository.GetByID(categoryId).Picture);
             }
             catch (Exception e)
             {

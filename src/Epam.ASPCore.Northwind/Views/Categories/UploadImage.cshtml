@@ -5,9 +5,9 @@
 
 <section class="page-top-section set-bg" data-setbg="../images/template/page-top-bg.jpg">
     <div class="container">
-        <h2>Upload category image</h2>
+        <h2>Upload @Model.CategoryName.ToLower() image</h2>
         <div class="site-breadcrumb">
-            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a> / <a asp-area="" asp-controller="Categories" asp-action="Index">Products</a> / <span>Upload category image</span>
+            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a> / <a asp-area="" asp-controller="Categories" asp-action="Index">Products</a> / <span>Upload @Model.CategoryName.ToLower() image</span>
         </div>
     </div>
 </section>
