@@ -1,6 +1,7 @@
 ﻿using System;
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
+using Epam.ASPCore.Northwind.WebUI.Middleware;
 using Epam.ASPCore.Northwind.WebUI.Services;
 using Epam.ASPCore.Northwind.WebUI.Settings;
 using Microsoft.AspNetCore.Builder;
@@ -71,6 +72,7 @@ namespace Epam.ASPCore.Northwind.WebUI
                 app.UseHsts();
             }
 
+            app.UseMiddleware<RequestResponseImagesMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -80,7 +82,7 @@ namespace Epam.ASPCore.Northwind.WebUI
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-                routes.MapRoute("images", "images/{id}",
+                routes.MapRoute("images", "CategoryImages/{id}",
                     defaults: new { controller = "Categories", action = "GetImage" });
             });
         }
