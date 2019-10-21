@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Epam.ASPCore.Northwind.WebUI.Middleware.Options;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 
@@ -12,14 +13,21 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
     public class RequestResponseImagesMiddleware
     {
         private readonly RequestDelegate _next;
-
-        public RequestResponseImagesMiddleware(RequestDelegate next)
+        private readonly ImageOptions _options;
+        private Timer _timer;
+        
+        public RequestResponseImagesMiddleware(
+            RequestDelegate next,
+            ImageOptions options)
         {
             _next = next;
+            _options = options;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
+            string queryStringForImages = "CategoryImages/";
+
             Stream originalBody = context.Response.Body;
 
             try
@@ -29,15 +37,16 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
                     context.Response.Body = memStream;
 
                     var pathRequest = context.Request.Path.Value;
-                    var indexStr = pathRequest.Contains("CategoryImages/") ? pathRequest.IndexOf("CategoryImages/") + "CategoryImages/".Length : -1;
-                    if (indexStr != -1)
+                    var subStringExists = pathRequest.Contains(queryStringForImages) ? pathRequest.IndexOf(queryStringForImages) + queryStringForImages.Length : -1;
+                    if (subStringExists != -1)
                     {
-                        var fileName = pathRequest.Contains("CategoryImages/") ? pathRequest.Substring(indexStr) : null;
+                        var fileName = pathRequest.Contains(queryStringForImages) ? pathRequest.Substring(subStringExists) : null;
                         if (!string.IsNullOrEmpty(fileName))
                         {
-                            DirectoryInfo root = new DirectoryInfo("D:\\CacheImages");
+                            DirectoryInfo root = new DirectoryInfo(_options.Path);
                             FileInfo[] listFiles = root.GetFiles($"{fileName}.*");
-                            if (listFiles.Length == 0)
+                            await StartExpirationAsync();
+                            if (listFiles.Length == 0 && listFiles.Length <= _options.MaxCountItem)
                             {
                                 await _next(context);
 
@@ -50,7 +59,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
                                     {
                                         if (context.Request.Path.HasValue)
                                         {
-                                            if (indexStr != -1)
+                                            if (subStringExists != -1)
                                             {
                                                 if (!string.IsNullOrEmpty(fileName))
                                                 {
@@ -89,11 +98,10 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
 
         private string ValidateImageFormat(byte[] bytes)
         { 
-            var bmp = Encoding.ASCII.GetBytes("BM");     // BMP
-            var gif = Encoding.ASCII.GetBytes("GIF");    // GIF
-            var png = new byte[] { 137, 80, 78, 71 };    // PNG
-            var jpeg = new byte[] { 255, 216, 255, 224 }; // jpeg
-            var jpeg2 = new byte[] { 255, 216, 255, 225 }; // jpeg canon
+            var bmp = Encoding.ASCII.GetBytes("BM");    
+            var gif = Encoding.ASCII.GetBytes("GIF");   
+            var png = new byte[] { 137, 80, 78, 71 };   
+            var jpeg = new byte[] { 255, 216, 255, 224 };
 
             if (bmp.SequenceEqual(bytes.Take(bmp.Length)))
                 return "bmp";
@@ -107,9 +115,6 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
             if (jpeg.SequenceEqual(bytes.Take(jpeg.Length)))
                 return "jpeg";
 
-            if (jpeg2.SequenceEqual(bytes.Take(jpeg2.Length)))
-                return "jpeg2";
-
             return string.Empty;
         }
 
@@ -117,13 +122,12 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
         {
             try
             {
-                string directory = "D:\\CacheImages";
-                if (!Directory.Exists(directory))
+                if (!Directory.Exists(_options.Path))
                 {
-                    Directory.CreateDirectory(directory);
+                    Directory.CreateDirectory(_options.Path);
                 }
 
-                var filePath = directory + "\\" + fileName + "." + format;
+                var filePath = _options.Path + "\\" + fileName + "." + format;
                 if (!File.Exists(filePath))
                 {
                     using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
@@ -135,6 +139,25 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
             catch (Exception ex)
             {
                 Log.Error($"Exception caught in process: {ex}");
+            }
+        }
+
+        private Task StartExpirationAsync()
+        {
+            if(_timer == null)
+                _timer = new Timer(ClearCache, null, TimeSpan.FromMinutes(_options.ExpirationMinutes),
+                    TimeSpan.FromMinutes(_options.ExpirationMinutes));
+
+            return Task.CompletedTask;
+        }
+
+        private void ClearCache(object state)
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(_options.Path);
+
+            if (directoryInfo.GetFiles().Length != 0)
+            {
+                Array.ForEach(Directory.GetFiles(_options.Path), File.Delete);
             }
         }
     }

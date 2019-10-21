@@ -2,6 +2,7 @@
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
 using Epam.ASPCore.Northwind.WebUI.Middleware;
+using Epam.ASPCore.Northwind.WebUI.Middleware.Options;
 using Epam.ASPCore.Northwind.WebUI.Services;
 using Epam.ASPCore.Northwind.WebUI.Settings;
 using Microsoft.AspNetCore.Builder;
@@ -72,7 +73,12 @@ namespace Epam.ASPCore.Northwind.WebUI
                 app.UseHsts();
             }
 
-            app.UseMiddleware<RequestResponseImagesMiddleware>();
+            app.UseMiddleware<RequestResponseImagesMiddleware>(new ImageOptions
+            {
+                Path = "D:\\CacheImages",
+                MaxCountItem = 10,
+                ExpirationMinutes = 1
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
