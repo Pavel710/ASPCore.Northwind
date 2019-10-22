@@ -38,48 +38,36 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
 
                     var pathRequest = context.Request.Path.Value;
                     var subStringExists = pathRequest.Contains(queryStringForImages) ? pathRequest.IndexOf(queryStringForImages) + queryStringForImages.Length : -1;
-                    if (subStringExists != -1)
+                    var fileName = pathRequest.Contains(queryStringForImages) ? pathRequest.Substring(subStringExists) : null;
+                    if (subStringExists != -1 && !string.IsNullOrEmpty(fileName))
                     {
-                        var fileName = pathRequest.Contains(queryStringForImages) ? pathRequest.Substring(subStringExists) : null;
-                        if (!string.IsNullOrEmpty(fileName))
+                        DirectoryInfo root = new DirectoryInfo(_options.Path);
+                        FileInfo[] listFiles = root.GetFiles($"{fileName}.*");
+                        await StartExpirationAsync();
+                        if (listFiles.Length == 0 && listFiles.Length <= _options.MaxCountItem)
                         {
-                            DirectoryInfo root = new DirectoryInfo(_options.Path);
-                            FileInfo[] listFiles = root.GetFiles($"{fileName}.*");
-                            await StartExpirationAsync();
-                            if (listFiles.Length == 0 && listFiles.Length <= _options.MaxCountItem)
-                            {
-                                await _next(context);
+                            await _next(context);
 
-                                memStream.Position = 0;
-                                if (context.Response.ContentType == "application/octet-stream")
+                            memStream.Position = 0;
+                            if (context.Response.ContentType == "application/octet-stream")
+                            {
+                                byte[] data = memStream.ToArray();
+                                var format = GetImageFormat(data);
+                                if (!string.IsNullOrEmpty(format))
                                 {
-                                    byte[] data = memStream.ToArray();
-                                    var format = ValidateImageFormat(data);
-                                    if (!string.IsNullOrEmpty(format))
-                                    {
-                                        if (context.Request.Path.HasValue)
-                                        {
-                                            if (subStringExists != -1)
-                                            {
-                                                if (!string.IsNullOrEmpty(fileName))
-                                                {
-                                                    ByteArrayToFile(fileName, data, format);
-                                                }
-                                            }
-                                        }
-                                    }
+                                    SaveToCache(fileName, data, format);
                                 }
+                            }
 
-                                memStream.Position = 0;
-                                await memStream.CopyToAsync(originalBody);
-                            }
-                            else
-                            {
-                                var cacheMemoryStream = new MemoryStream(File.ReadAllBytes(listFiles[0].FullName));
-                                context.Response.Headers.Add("cacheImage", "true");
-                                cacheMemoryStream.Position = 0;
-                                await cacheMemoryStream.CopyToAsync(originalBody);
-                            }
+                            memStream.Position = 0;
+                            await memStream.CopyToAsync(originalBody);
+                        }
+                        else
+                        {
+                            var cacheMemoryStream = new MemoryStream(File.ReadAllBytes(listFiles[0].FullName));
+                            context.Response.Headers.Add("cacheImage", "true");
+                            cacheMemoryStream.Position = 0;
+                            await cacheMemoryStream.CopyToAsync(originalBody);
                         }
                     }
                     else
@@ -96,7 +84,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
             }
         }
 
-        private string ValidateImageFormat(byte[] bytes)
+        private string GetImageFormat(byte[] bytes)
         { 
             var bmp = Encoding.ASCII.GetBytes("BM");    
             var gif = Encoding.ASCII.GetBytes("GIF");   
@@ -118,7 +106,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
             return string.Empty;
         }
 
-        private void ByteArrayToFile(string fileName, byte[] byteArray, string format)
+        private void SaveToCache(string fileName, byte[] byteArray, string format)
         {
             try
             {

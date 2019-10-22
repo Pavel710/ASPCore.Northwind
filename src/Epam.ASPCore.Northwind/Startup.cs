@@ -1,6 +1,7 @@
 ﻿using System;
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
+using Epam.ASPCore.Northwind.WebUI.Filters;
 using Epam.ASPCore.Northwind.WebUI.Middleware;
 using Epam.ASPCore.Northwind.WebUI.Middleware.Options;
 using Epam.ASPCore.Northwind.WebUI.Services;
@@ -54,7 +55,8 @@ namespace Epam.ASPCore.Northwind.WebUI
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ISupplierService, SupplierService>();
             
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options => { options.Filters.Add(new LoggActionFilter(true)); })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,7 +79,7 @@ namespace Epam.ASPCore.Northwind.WebUI
             {
                 Path = "D:\\CacheImages",
                 MaxCountItem = 10,
-                ExpirationMinutes = 1
+                ExpirationMinutes = 30
             });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
