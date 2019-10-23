@@ -41,6 +41,11 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
                     var fileName = pathRequest.Contains(queryStringForImages) ? pathRequest.Substring(subStringExists) : null;
                     if (subStringExists != -1 && !string.IsNullOrEmpty(fileName))
                     {
+                        if (!Directory.Exists(_options.Path))
+                        {
+                          Directory.CreateDirectory(_options.Path);
+                        }
+
                         DirectoryInfo root = new DirectoryInfo(_options.Path);
                         FileInfo[] listFiles = root.GetFiles($"{fileName}.*");
                         await StartExpirationAsync();
@@ -110,12 +115,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
         {
             try
             {
-                if (!Directory.Exists(_options.Path))
-                {
-                    Directory.CreateDirectory(_options.Path);
-                }
-
-                var filePath = _options.Path + "\\" + fileName + "." + format;
+              var filePath = _options.Path + "\\" + fileName + "." + format;
                 if (!File.Exists(filePath))
                 {
                     using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
