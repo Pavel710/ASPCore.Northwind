@@ -75,9 +75,10 @@ namespace Epam.ASPCore.Northwind.WebUI
                 app.UseHsts();
             }
 
+            var path = env.ContentRootPath[0] + ":" + Configuration.GetSection("CacheImagePath").Value;
             app.UseMiddleware<RequestResponseImagesMiddleware>(new ImageOptions
             {
-                Path = "D:\\CacheImages",
+                Path = path,
                 MaxCountItem = 10,
                 ExpirationMinutes = 30
             });
