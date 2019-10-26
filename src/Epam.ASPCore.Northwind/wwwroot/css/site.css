@@ -267,6 +267,9 @@ body {
   transition: all .2s ease;
 }
 
+/* ----------------
+  Category Images 
+---------------------*/
 .img-hover-zoom {
     -ms-transition: transform .5s ease;
     -o-transition: transform .5s ease;
@@ -285,3 +288,12 @@ body {
     width: 250px;
     height: 170px;
 }
+
+.category-appear-message {
+    color: red;
+    text-align: center;
+}
+
+.site-logo img {
+    height: 45px;
+} 

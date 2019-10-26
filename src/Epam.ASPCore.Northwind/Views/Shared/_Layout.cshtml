@@ -12,49 +12,63 @@
 </head>
 <body>
 
-<header class="header-section">
-    <a asp-area="" asp-controller="Home" asp-action="Index" class="site-logo">Northwind</a>
-    <div class="nav-warp">
-        <div class="user-panel">
-            <a href="#">Login</a> /
-            <a href="#">Register</a>
-        </div>
-        <ul class="main-menu main-menu-hamburger">
-            <li>
-                <div class="dropdown">
-                    <button type="button" class="btn btn-hamburger" data-toggle="dropdown">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a asp-area="" asp-controller="Home" asp-action="Index" class="dropdown-item">Home</a>
-                        <a asp-area="" asp-controller="Categories" asp-action="Index" class="dropdown-item">Categories</a>
-                        <a asp-area="" asp-controller="Products" asp-action="Index" class="dropdown-item">Products</a>
-                    </div>
+    @if (IsSectionDefined("Headers"))
+    {
+        @RenderSection("Headers")
+    }
+    else
+    {
+        <header class="header-section">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="site-logo"><img src="images/logo.png"/></a>
+            <div class="nav-warp">
+                <div class="user-panel">
+                    <a href="#">Login</a> /
+                    <a href="#">Register</a>
                 </div>
-            </li>
-        </ul>
-    </div>
-</header>
+                <ul class="main-menu main-menu-hamburger">
+                    <li>
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-hamburger" data-toggle="dropdown">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a asp-area="" asp-controller="Home" asp-action="Index" class="dropdown-item">Home</a>
+                                <a asp-area="" asp-controller="Categories" asp-action="Index" class="dropdown-item">Categories</a>
+                                <a asp-area="" asp-controller="Products" asp-action="Index" class="dropdown-item">Products</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </header>
+    }
 
-@*<partial name="_CookieConsentPartial" />*@
+    @*<partial name="_CookieConsentPartial" />*@
 
-@RenderBody()
+    @RenderBody()
 
-<footer class="footer-section">
-    <div class="container">
-        <div class="copyright">Copyright &copy; 2019 - Northwind</div>
-    </div>
-</footer>
+    @if (IsSectionDefined("Footers"))
+    {
+        @RenderSection("Footers")
+    }
+    else
+    {
+        <footer class="footer-section">
+            <div class="container">
+                <div class="copyright">Copyright &copy; @DateTime.Now.Year - Northwind</div>
+            </div>
+        </footer>
+    }
 
-<environment include="Development">
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/main.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-</environment>
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/main.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
 
-@RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

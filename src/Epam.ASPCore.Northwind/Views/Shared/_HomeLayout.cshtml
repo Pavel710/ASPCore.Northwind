@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Northwind</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/template.css" />
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" />
+</head>
+<body>
+    <header class="header-section">
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="site-logo"><img src="images/logo.png"/></a>
+        <div class="nav-warp">
+            <div class="user-panel">
+                <a href="#">Login</a> /
+                <a href="#">Register</a>
+            </div>
+            <ul class="main-menu main-menu-hamburger">
+                <li>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-hamburger" data-toggle="dropdown">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a asp-area="" asp-controller="Categories" asp-action="Index" class="dropdown-item">Categories</a>
+                            <a asp-area="" asp-controller="Products" asp-action="Index" class="dropdown-item">Products</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    @RenderBody()
+
+    <footer class="footer-section">
+        <div class="container">
+            <div class="copyright">Copyright &copy; @DateTime.Now.Year - Northwind</div>
+            <p style="color: white;padding-left: 190px;">Home Page</p>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/main.js"></script>
+</body>
+</html>
