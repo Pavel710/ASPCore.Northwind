@@ -1,14 +1,17 @@
 ﻿@model Epam.ASPCore.Northwind.WebUI.Models.CategoriesModel
 @{
     ViewData["Title"] = "Upload Category Image";
+    var pageName = $"Upload {@Model.CategoryName.ToLower()} image";
 }
 
 <section class="page-top-section set-bg" data-setbg="../images/template/page-top-bg.jpg">
     <div class="container">
-        <h2>Upload @Model.CategoryName.ToLower() image</h2>
-        <div class="site-breadcrumb">
-            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a> / <a asp-area="" asp-controller="Categories" asp-action="Index">Products</a> / <span>Upload @Model.CategoryName.ToLower() image</span>
-        </div>
+        <h2>@pageName</h2>
+        @await Component.InvokeAsync("Breadcrumbs", new List<BreadcrumbModel>
+        {
+            new BreadcrumbModel { EntityName = "Categories", ActionName = "Index", ControllerName = "Categories" },
+            new BreadcrumbModel { EntityName = pageName, IsCurrentPage = true }
+        })
     </div>
 </section>
 

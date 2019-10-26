@@ -1,0 +1,19 @@
+﻿@model List<Epam.ASPCore.Northwind.WebUI.Models.BreadcrumbModel>
+@{
+    Layout = null;
+}
+
+<div class="site-breadcrumb">
+    <a asp-area="" asp-controller="Home" asp-action="Index">Home</a> /
+    @foreach (var breadcrumbModel in Model)
+    {
+        if (breadcrumbModel.IsCurrentPage)
+        {
+            <span>@breadcrumbModel.EntityName</span>
+        }
+        else
+        {
+            <a asp-area="" asp-controller="@breadcrumbModel.ControllerName" asp-action="@breadcrumbModel.ActionName">@breadcrumbModel.EntityName /</a>
+        }
+    }
+</div>

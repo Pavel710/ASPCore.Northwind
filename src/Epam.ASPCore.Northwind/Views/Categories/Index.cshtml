@@ -2,14 +2,13 @@
 
 @{
     ViewData["Title"] = "Categories Page";
+    var pageName = "Categories";
 }
 
 <section class="page-top-section set-bg" data-setbg="./images/template/page-top-bg.jpg">
     <div class="container">
-        <h2>Categories</h2>
-        <div class="site-breadcrumb">
-            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a> / <span>Categories</span>
-        </div>
+        <h2>@pageName</h2>
+        @await Component.InvokeAsync("Breadcrumbs", new List<BreadcrumbModel> { new BreadcrumbModel { IsCurrentPage = true, EntityName = pageName } })
     </div>
 </section>
 

@@ -1,14 +1,17 @@
 ﻿@model Epam.ASPCore.Northwind.WebUI.Models.ProductsModel
 @{
     ViewData["Title"] = "Product form";
+    var pageName = ViewBag.Mod == "Add" ? "Create New Product" : $"Edit {Model.ProductName}";
 }
 
 <section class="page-top-section set-bg" data-setbg="../images/template/page-top-bg.jpg">
     <div class="container">
-        <h2>Product form</h2>
-        <div class="site-breadcrumb">
-            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a> / <a asp-area="" asp-controller="Products" asp-action="Index">Products</a> / <span>Product form</span>
-        </div>
+        <h2>@pageName</h2>
+        @await Component.InvokeAsync("Breadcrumbs", new List<BreadcrumbModel>
+        {
+            new BreadcrumbModel { EntityName = "Products", ActionName = "Index", ControllerName = "Products" },
+            new BreadcrumbModel { EntityName = pageName, IsCurrentPage = true }
+        })
     </div>
 </section>
 
