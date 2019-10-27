@@ -13,9 +13,9 @@ namespace Epam.ASPCore.Northwind.WebUI.Models
         public string QuantityPerUnit { get; set; }
         [Range(0, 9999.99)]
         public decimal? UnitPrice { get; set; }
-        [Range(0, 100)]
+        [Range(0, 200)]
         public short? UnitsInStock { get; set; }
-        [Range(0, 50)]
+        [Range(0, 200)]
         public short? UnitsOnOrder { get; set; }
         public short? ReorderLevel { get; set; }
         public bool Discontinued { get; set; }
