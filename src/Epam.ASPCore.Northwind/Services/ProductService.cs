@@ -29,7 +29,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
             Log.Information("Read configuration: " + nameof(_productsSettings.Maximum) + ": " + _productsSettings.Maximum);
         }
 
-        public List<ProductsModel> GetProductsModelList()
+        public List<ProductsModel> GetProducts()
         {
             try
             {

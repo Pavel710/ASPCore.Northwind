@@ -5,7 +5,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
 {
     public interface IProductService
     {
-        List<ProductsModel> GetProductsModelList();
+        List<ProductsModel> GetProducts();
         void SaveProduct(ProductsModel model);
         ProductsModel GetProduct(int id);
         void UpdateProduct(ProductsModel model);

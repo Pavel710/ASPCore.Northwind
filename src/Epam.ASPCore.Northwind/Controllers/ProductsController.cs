@@ -22,7 +22,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(_productService.GetProductsModelList());
+            return View(_productService.GetProducts());
         }
 
         [HttpGet]
