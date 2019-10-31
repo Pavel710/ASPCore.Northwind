@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.902
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.ASPCore.Northwind.ConsoleClient", "Epam.ASPCore.Northwind.ConsoleClient\Epam.ASPCore.Northwind.ConsoleClient.csproj", "{7103D26D-3A72-4BF9-8A40-4274041BCD65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epam.ASPCore.Northwind.ConsoleClient", "Epam.ASPCore.Northwind.ConsoleClient\Epam.ASPCore.Northwind.ConsoleClient.csproj", "{7103D26D-3A72-4BF9-8A40-4274041BCD65}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Epam.ASPCore.Northwind.WebClient", "Epam.ASPCore.Northwind.WebClient", "{C4553F50-E0A1-4E9A-8B10-F53922575699}"
+	ProjectSection(SolutionItems) = preProject
+		HtmlClient.html = HtmlClient.html
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
