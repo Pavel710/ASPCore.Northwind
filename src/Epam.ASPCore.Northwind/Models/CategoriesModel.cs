@@ -19,6 +19,6 @@ namespace Epam.ASPCore.Northwind.WebUI.Models
         public string Description { get; set; }
         public byte[] Picture { get; set; }
 
-        public virtual ICollection<ProductsModel> Products { get; set; }
+        public ICollection<ProductsModel> Products { get; set; }
     }
 }
