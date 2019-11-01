@@ -5,9 +5,10 @@ VisualStudioVersion = 15.0.28307.902
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epam.ASPCore.Northwind.ConsoleClient", "Epam.ASPCore.Northwind.ConsoleClient\Epam.ASPCore.Northwind.ConsoleClient.csproj", "{7103D26D-3A72-4BF9-8A40-4274041BCD65}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Epam.ASPCore.Northwind.WebClient", "Epam.ASPCore.Northwind.WebClient", "{C4553F50-E0A1-4E9A-8B10-F53922575699}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Epam.ASPCore.Northwind.WebClient", "Epam.ASPCore.Northwind.WebClient", "{2061AE82-E4EA-4029-B128-09440701CF83}"
 	ProjectSection(SolutionItems) = preProject
-		HtmlClient.html = HtmlClient.html
+		Epam.ASPCore.Northwind.WebClient\HtmlClient.html = Epam.ASPCore.Northwind.WebClient\HtmlClient.html
+		Epam.ASPCore.Northwind.WebClient\jquery.min.js = Epam.ASPCore.Northwind.WebClient\jquery.min.js
 	EndProjectSection
 EndProject
 Global

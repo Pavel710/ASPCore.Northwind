@@ -23,12 +23,14 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         [HttpGet("categories")]
         public ActionResult<List<CategoriesModel>> GetCategoriesCollection()
         {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
             return _categoryService.GetCategories();
         }
 
         [HttpGet("products")]
         public ActionResult<List<ProductsModel>> GetProductsCollection()
         {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
             return _productService.GetProducts();
         }
     }

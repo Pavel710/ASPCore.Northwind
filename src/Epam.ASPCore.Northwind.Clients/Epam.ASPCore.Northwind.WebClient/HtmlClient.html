@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Web client</title>
+</head>
+<body>
+
+<div>
+    <h2>All Categories</h2>
+    <ul id="categories" />
+</div>
+
+<div>
+    <h2>All Products</h2>
+    <ul id="products" />
+</div>
+
+<script src="jquery.min.js"></script>
+<script>
+    var baseAddress = 'http://localhost:50142/';
+    var categoriesUri = 'api/NorthwindAPI/categories';
+    var productsUri = 'api/NorthwindAPI/products';
+
+    $(document).ready(function () {
+        $.getJSON(baseAddress + categoriesUri)
+            .done(function (data) {
+                $.each(data, function (key, item) {
+                    var obj = $('<li>', { text: formatCategories(item) }).appendTo($('#categories'));
+                    obj.html(obj.html().replace(/\n/g, '<br/>'));
+                    obj.css("margin-bottom", "20px");
+                });
+            })
+            .fail(function () { alert('getJSON request failed! Check the availability of the server.'); });
+
+        $.getJSON(baseAddress + productsUri)
+            .done(function (data) {
+                $.each(data, function (key, item) {
+                    var obj = $('<li>', { text: formatProducts(item) }).appendTo($('#products'));
+                    obj.html(obj.html().replace(/\n/g, '<br/>'));
+                    obj.css("margin-bottom", "20px");
+                });
+            })
+            .fail(function () { alert('getJSON request failed! Check the availability of the server.'); });;
+    });
+
+    function formatCategories(item) {
+        return 'Category ID: ' + item.categoryId +
+            '\nName: ' + item.categoryName + 
+            '\nDescription: ' + item.description;
+    }
+
+    function formatProducts(item) {
+        return "Product ID: " + item.productId +
+            "\nName: " + item.productName +
+            "\nUnits in stock: " + item.unitsInStock +
+            "\nUnits on order: " + item.unitsOnOrder +
+            "\nUnit price: " + item.unitPrice +
+            "\nQuantity per unit: " + item.quantityPerUnit +
+            "\nReorder level: " + item.reorderLevel +
+            "\nDiscontinued: " + item.discontinued +
+            "\nCategory: " + item.category.CategoryName;
+    }
+</script>
+</body>
+</html>
