@@ -55,7 +55,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
                             await _next(context);
 
                             memStream.Position = 0;
-                            if (context.Response.ContentType == "application/octet-stream")
+                            if (context.Response.ContentType.Contains("image/"))
                             {
                                 byte[] data = memStream.ToArray();
                                 var format = _imagesService.GetImageFormat(data);
