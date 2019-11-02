@@ -15,12 +15,10 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
     public class CategoryService : ICategoryService
     {
         private readonly INorthwindRepository<Categories> _categoriesRepository;
-        private readonly IImagesService _imagesService;
 
         public CategoryService(INorthwindRepository<Categories> categoriesRepository)
         {
             _categoriesRepository = categoriesRepository;
-            _imagesService = new ImagesService();
         }
 
         public List<SelectListItem> GetCategoriesSelectedList(int? selectedItemId = null)
@@ -68,16 +66,11 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
             }
         }
 
-        public CategoryImageModel GetCategoryImage(int categoryId)
+        public Stream GetCategoryImageStream(int categoryId)
         {
             try
             {
-                var image = _categoriesRepository.GetByID(categoryId).Picture;
-                return new CategoryImageModel
-                {
-                    ImageStream = new MemoryStream(image),
-                    ImageFormat = _imagesService.GetImageFormat(image) ?? ImagesService.DefaultFormat
-                };
+                return new MemoryStream(_categoriesRepository.GetByID(categoryId).Picture);
             }
             catch (Exception e)
             {

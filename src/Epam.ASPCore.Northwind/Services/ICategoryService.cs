@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Epam.ASPCore.Northwind.WebUI.Models;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +13,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
 
         List<CategoriesModel> GetCategories();
 
-        CategoryImageModel GetCategoryImage(int categoryId);
+        Stream GetCategoryImageStream(int categoryId);
 
         Task<bool> UploadCategoryPicture(IFormFile image, int categoryId);
 
