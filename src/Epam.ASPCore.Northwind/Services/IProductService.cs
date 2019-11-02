@@ -9,5 +9,6 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
         void SaveProduct(ProductsModel model);
         ProductsModel GetProduct(int id);
         void UpdateProduct(ProductsModel model);
+        void DeleteProduct(int id);
     }
 }

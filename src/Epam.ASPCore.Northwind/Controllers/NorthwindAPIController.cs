@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using Epam.ASPCore.Northwind.WebUI.Models;
 using Epam.ASPCore.Northwind.WebUI.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Epam.ASPCore.Northwind.WebUI.Controllers
@@ -20,6 +24,8 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
             _categoryService = categoryService;
         }
 
+        #region Categories
+
         [HttpGet("categories")]
         public ActionResult<List<CategoriesModel>> GetCategoriesCollection()
         {
@@ -27,11 +33,93 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
             return _categoryService.GetCategories();
         }
 
+        [HttpGet("categoryImage")]
+        public ActionResult GetCategoryImage(int id)
+        {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            var categoryImage = _categoryService.GetCategoryImage(id);
+            Stream categoryImageStream = categoryImage.ImageStream;
+
+            if (categoryImageStream.Length == 0)
+                return NotFound();
+
+            return File(categoryImageStream, $"image/{categoryImage.ImageFormat}");
+        }
+
+        [HttpPut("categoryImageUpdate")]
+        public async Task<JsonResult> UpdateCategoryImage(IFormFile uploadedImage, int categoryId)
+        {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            
+            try
+            {
+                return new JsonResult(new { Success = await _categoryService.UploadCategoryPicture(uploadedImage, categoryId) });
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(new { Success = false, e.Message });
+            }
+        }
+
+        #endregion
+
+        #region Products
+
         [HttpGet("products")]
         public ActionResult<List<ProductsModel>> GetProductsCollection()
         {
             Response.Headers.Add("Access-Control-Allow-Origin", "*");
             return _productService.GetProducts();
         }
+
+        [HttpPost("productCreate")]
+        public JsonResult PostCreateProduct(ProductsModel model)
+        {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
+            try
+            {
+                _productService.SaveProduct(model);
+                return new JsonResult(new { Success = true });
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(new { Success = false, e.Message });
+            }
+        }
+
+        [HttpPut("productUpdate")]
+        public JsonResult PutUpdateProduct(ProductsModel model)
+        {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
+            try
+            {
+                _productService.UpdateProduct(model);
+                return new JsonResult(new { Success = true });
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(new { Success = false, e.Message });
+            }
+        }
+
+        [HttpDelete("productDelete")]
+        public JsonResult DeleteProduct(int productId)
+        {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
+            try
+            {
+                _productService.DeleteProduct(productId);
+                return new JsonResult(new { Success = true });
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(new { Success = false, e.Message });
+            }
+        }
+
+        #endregion
     }
 }

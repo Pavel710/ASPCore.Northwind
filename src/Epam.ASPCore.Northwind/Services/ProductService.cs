@@ -142,5 +142,18 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
                 throw;
             }
         }
+
+        public void DeleteProduct(int id)
+        {
+            try
+            {
+                _productsRepository.Delete(id);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Product service error!" + Environment.NewLine + $"{e}");
+                throw;
+            }
+        }
     }
 }

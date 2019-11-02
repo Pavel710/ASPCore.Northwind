@@ -24,12 +24,13 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         [HttpGet("/CategoryImages/{id}")]
         public IActionResult GetImage(int id)
         {
-            Stream categoryImageStream = _categoryService.GetCategoryImageStream(id);
+            var categoryImage = _categoryService.GetCategoryImage(id);
+            Stream categoryImageStream = categoryImage.ImageStream;
 
             if (categoryImageStream.Length == 0)
                 return NotFound();
 
-            return File(categoryImageStream, "application/octet-stream");
+            return File(categoryImageStream, $"image/{categoryImage.ImageFormat}");
         }
 
         [HttpGet]

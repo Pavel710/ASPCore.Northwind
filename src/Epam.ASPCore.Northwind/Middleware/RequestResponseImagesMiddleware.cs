@@ -1,10 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Epam.ASPCore.Northwind.WebUI.Middleware.Options;
+using Epam.ASPCore.Northwind.WebUI.Services;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 
@@ -14,6 +13,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ImageOptions _options;
+        private readonly IImagesService _imagesService;
         private Timer _timer;
         
         public RequestResponseImagesMiddleware(
@@ -22,6 +22,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
         {
             _next = next;
             _options = options;
+            _imagesService = new ImagesService();
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -57,7 +58,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
                             if (context.Response.ContentType == "application/octet-stream")
                             {
                                 byte[] data = memStream.ToArray();
-                                var format = GetImageFormat(data);
+                                var format = _imagesService.GetImageFormat(data);
                                 if (!string.IsNullOrEmpty(format))
                                 {
                                     SaveToCache(fileName, data, format);
@@ -87,28 +88,6 @@ namespace Epam.ASPCore.Northwind.WebUI.Middleware
             {
                 context.Response.Body = originalBody;
             }
-        }
-
-        private string GetImageFormat(byte[] bytes)
-        { 
-            var bmp = Encoding.ASCII.GetBytes("BM");    
-            var gif = Encoding.ASCII.GetBytes("GIF");   
-            var png = new byte[] { 137, 80, 78, 71 };   
-            var jpeg = new byte[] { 255, 216, 255, 224 };
-
-            if (bmp.SequenceEqual(bytes.Take(bmp.Length)))
-                return "bmp";
-
-            if (gif.SequenceEqual(bytes.Take(gif.Length)))
-                return "gif";
-
-            if (png.SequenceEqual(bytes.Take(png.Length)))
-                return "png";
-
-            if (jpeg.SequenceEqual(bytes.Take(jpeg.Length)))
-                return "jpeg";
-
-            return string.Empty;
         }
 
         private void SaveToCache(string fileName, byte[] byteArray, string format)

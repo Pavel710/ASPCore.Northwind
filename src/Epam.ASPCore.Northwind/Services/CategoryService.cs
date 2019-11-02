@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,10 +15,12 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
     public class CategoryService : ICategoryService
     {
         private readonly INorthwindRepository<Categories> _categoriesRepository;
+        private readonly IImagesService _imagesService;
 
         public CategoryService(INorthwindRepository<Categories> categoriesRepository)
         {
             _categoriesRepository = categoriesRepository;
+            _imagesService = new ImagesService();
         }
 
         public List<SelectListItem> GetCategoriesSelectedList(int? selectedItemId = null)
@@ -67,11 +68,16 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
             }
         }
 
-        public Stream GetCategoryImageStream(int categoryId)
+        public CategoryImageModel GetCategoryImage(int categoryId)
         {
             try
             {
-                return new MemoryStream(_categoriesRepository.GetByID(categoryId).Picture);
+                var image = _categoriesRepository.GetByID(categoryId).Picture;
+                return new CategoryImageModel
+                {
+                    ImageStream = new MemoryStream(image),
+                    ImageFormat = _imagesService.GetImageFormat(image) ?? ImagesService.DefaultFormat
+                };
             }
             catch (Exception e)
             {
