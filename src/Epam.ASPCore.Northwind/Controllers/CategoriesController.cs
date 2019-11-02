@@ -21,7 +21,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
             return View(_categoryService.GetCategories());
         }
 
-        [HttpGet("/CategoryImages/{id}")]
+        [HttpGet]
         public IActionResult GetImage(int id)
         {
             var categoryImage = _categoryService.GetCategoryImage(id);
