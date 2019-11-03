@@ -30,23 +30,37 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         public ActionResult<List<CategoriesModel>> GetCategoriesCollection()
         {
             Response.Headers.Add("Access-Control-Allow-Origin", "*");
-            return _categoryService.GetCategories();
+            try
+            {
+                return _categoryService.GetCategories();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
         }
 
         [HttpGet("categoryImage")]
         public ActionResult GetCategoryImage(int id)
         {
             Response.Headers.Add("Access-Control-Allow-Origin", "*");
-            Stream categoryImageStream = _categoryService.GetCategoryImageStream(id);
+            try
+            {
+                Stream categoryImageStream = _categoryService.GetCategoryImageStream(id);
 
-            if (categoryImageStream.Length == 0)
-                return NotFound();
+                if (categoryImageStream.Length == 0)
+                    return NotFound();
 
-            return File(categoryImageStream, "image/*");
+                return File(categoryImageStream, "image/*");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
         }
 
         [HttpPut("categoryImageUpdate")]
-        public async Task<JsonResult> UpdateCategoryImage(IFormFile uploadedImage, int categoryId)
+        public async Task<ActionResult> UpdateCategoryImage(IFormFile uploadedImage, int categoryId)
         {
             Response.Headers.Add("Access-Control-Allow-Origin", "*");
             
@@ -56,7 +70,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
             }
             catch (Exception e)
             {
-                return new JsonResult(new { Success = false, e.Message });
+                return StatusCode(500, e);
             }
         }
 
@@ -68,11 +82,19 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         public ActionResult<List<ProductsModel>> GetProductsCollection()
         {
             Response.Headers.Add("Access-Control-Allow-Origin", "*");
-            return _productService.GetProducts();
+            
+            try
+            {
+                return _productService.GetProducts();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
         }
 
         [HttpPost("productCreate")]
-        public JsonResult PostCreateProduct(ProductsModel model)
+        public ActionResult PostCreateProduct(ProductsModel model)
         {
             Response.Headers.Add("Access-Control-Allow-Origin", "*");
 
@@ -83,12 +105,12 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
             }
             catch (Exception e)
             {
-                return new JsonResult(new { Success = false, e.Message });
+                return StatusCode(500, e);
             }
         }
 
         [HttpPut("productUpdate")]
-        public JsonResult PutUpdateProduct(ProductsModel model)
+        public ActionResult PutUpdateProduct(ProductsModel model)
         {
             Response.Headers.Add("Access-Control-Allow-Origin", "*");
 
@@ -99,12 +121,12 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
             }
             catch (Exception e)
             {
-                return new JsonResult(new { Success = false, e.Message });
+                return StatusCode(500, e);
             }
         }
 
         [HttpDelete("productDelete")]
-        public JsonResult DeleteProduct(int productId)
+        public ActionResult DeleteProduct(int productId)
         {
             Response.Headers.Add("Access-Control-Allow-Origin", "*");
 
@@ -115,7 +137,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
             }
             catch (Exception e)
             {
-                return new JsonResult(new { Success = false, e.Message });
+                return StatusCode(500, e);
             }
         }
 

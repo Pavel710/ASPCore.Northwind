@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
 using Epam.ASPCore.Northwind.WebUI.Filters;
@@ -48,6 +49,22 @@ namespace Epam.ASPCore.Northwind.WebUI
             services.AddDbContext<NorthwindContext>(options => 
                 options.UseSqlServer(connectionString));
 
+            services.AddSwaggerDocument(config =>
+            {
+                config.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "Northwind API";
+                    document.Info.Description = "A simple ASP.NET Core web API";
+                    document.Info.Contact = new NSwag.OpenApiContact
+                    {
+                        Name = "Pavel Veselov",
+                        Email = string.Empty,
+                        Url = "https://www.linkedin.com/in/pavel-veselov-287683167/"
+                    };
+                };
+            });
+
             services.Configure<ProductsSettings>(Configuration.GetSection("ProductsSettings"));
 
             services.AddTransient(typeof(INorthwindRepository<>), typeof(NorthwindRepository<>));
@@ -85,6 +102,9 @@ namespace Epam.ASPCore.Northwind.WebUI
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseMvc(routes =>
             {
