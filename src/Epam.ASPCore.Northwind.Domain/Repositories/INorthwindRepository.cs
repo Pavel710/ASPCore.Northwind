@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Epam.ASPCore.Northwind.Domain.Repositories
 {
@@ -6,8 +7,10 @@ namespace Epam.ASPCore.Northwind.Domain.Repositories
     {
         IEnumerable<TEntity> Get();
         TEntity GetByID(int entityId);
+        TEntity GetByID(int firstId, int secondId);
         void Insert(TEntity entity);
-        void Delete(int entityId);
+        Task Delete(int entityId);
+        Task Delete(int firstId, int secondId);
         void Update(TEntity entity);
     }
 }

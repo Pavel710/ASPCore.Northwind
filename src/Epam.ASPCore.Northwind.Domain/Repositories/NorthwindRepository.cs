@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+
 using Epam.ASPCore.Northwind.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +27,11 @@ namespace Epam.ASPCore.Northwind.Domain.Repositories
             return Entities.Find(entityId);
         }
 
+        public TEntity GetByID(int firstId, int secondId)
+        {
+          return Entities.Find(firstId, secondId);
+        }
+
         public void Insert(TEntity entity)
         {
             if (entity == null)
@@ -34,14 +41,24 @@ namespace Epam.ASPCore.Northwind.Domain.Repositories
             _context.SaveChanges();
         }
 
-        public void Delete(int entityId)
+        public async Task Delete(int entityId)
         {
             var entity = GetByID(entityId);
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
             Entities.Remove(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Delete(int firstId, int secondId)
+        {
+          var entity = GetByID(firstId, secondId);
+          if (entity == null)
+            throw new ArgumentNullException("entity");
+
+          Entities.Remove(entity);
+          await _context.SaveChangesAsync();
         }
 
         public void Update(TEntity entity)

@@ -15,16 +15,19 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
         private readonly INorthwindRepository<Products> _productsRepository;
         private readonly INorthwindRepository<Categories> _categoriesRepository;
         private readonly INorthwindRepository<Suppliers> _supplierRepository;
+        private readonly INorthwindRepository<OrderDetails> _orderDetailsRepository;
         private readonly ProductsSettings _productsSettings;
 
         public ProductService(INorthwindRepository<Products> productsRepository,
             INorthwindRepository<Categories> categoriesRepository,
             INorthwindRepository<Suppliers> supplierRepository,
-            IOptions<ProductsSettings> productsSettings)
+            IOptions<ProductsSettings> productsSettings,
+            INorthwindRepository<OrderDetails> orderDetailsRepository)
         {
             _productsRepository = productsRepository;
             _categoriesRepository = categoriesRepository;
             _supplierRepository = supplierRepository;
+            _orderDetailsRepository = orderDetailsRepository;
             _productsSettings = productsSettings.Value;
             Log.Information("Read configuration: " + nameof(_productsSettings.Maximum) + ": " + _productsSettings.Maximum);
         }
@@ -147,6 +150,12 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
         {
             try
             {
+                var orderDetails = _orderDetailsRepository.Get().Where(x => x.ProductId == id);
+                foreach (var detail in orderDetails)
+                {
+                  _orderDetailsRepository.Delete(detail.OrderId, id);
+                }
+
                 _productsRepository.Delete(id);
             }
             catch (Exception e)
