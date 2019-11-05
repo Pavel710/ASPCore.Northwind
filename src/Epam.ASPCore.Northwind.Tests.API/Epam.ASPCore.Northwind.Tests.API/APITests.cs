@@ -78,65 +78,79 @@ namespace Epam.ASPCore.Northwind.Tests.API
         [Fact]
         public async void UpdateProduct_Test()
         {
-          var productsList = await _northwindClient.GetProductsCollectionAsync();
-          var productFromList = productsList.FirstOrDefault();
-          var productModel = new ProductsModel(productFromList.Category, false, productFromList.OrderDetails, productFromList.ProductId, productFromList.ProductName + " test update", productFromList.QuantityPerUnit, 32, productFromList.Supplier, 120, 40, 50);
+            var productsList = await _northwindClient.GetProductsCollectionAsync();
+            var productFromList = productsList.FirstOrDefault();
+            var productModel = new ProductsModel(productFromList.Category, false, productFromList.OrderDetails, productFromList.ProductId, productFromList.ProductName + " test update", productFromList.QuantityPerUnit, 32, productFromList.Supplier, 120, 40, 50);
 
-          var response = await _northwindClient.PutUpdateProductAsync(productModel);
+            var response = await _northwindClient.PutUpdateProductAsync(productModel);
 
-          Assert.True(response.StatusCode == 200);
-          StreamReader reader = new StreamReader(response.Stream);
-          string jsonString = reader.ReadToEnd();
-          ResponseModel responseModel = JsonConvert.DeserializeObject<ResponseModel>(jsonString);
-          Assert.True(responseModel.Success);
+            Assert.True(response.StatusCode == 200);
+            StreamReader reader = new StreamReader(response.Stream);
+            string jsonString = reader.ReadToEnd();
+            ResponseModel responseModel = JsonConvert.DeserializeObject<ResponseModel>(jsonString);
+            Assert.True(responseModel.Success);
 
-          var updatedProductsList = await _northwindClient.GetProductsCollectionAsync();
-          var updatedProduct = updatedProductsList.FirstOrDefault();
-          Assert.Equal(productModel.ProductId, updatedProduct.ProductId);
-          Assert.Equal(productModel.ProductName, updatedProduct.ProductName);
-          Assert.Equal(productModel.Discontinued, updatedProduct.Discontinued);
-          Assert.Equal(productModel.ReorderLevel, updatedProduct.ReorderLevel);
-          Assert.Equal(productModel.UnitPrice, updatedProduct.UnitPrice);
-          Assert.Equal(productModel.UnitsInStock, updatedProduct.UnitsInStock);
-          Assert.Equal(productModel.UnitsOnOrder, updatedProduct.UnitsOnOrder);
+            var updatedProductsList = await _northwindClient.GetProductsCollectionAsync();
+            var updatedProduct = updatedProductsList.FirstOrDefault();
+            Assert.Equal(productModel.ProductId, updatedProduct.ProductId);
+            Assert.Equal(productModel.ProductName, updatedProduct.ProductName);
+            Assert.Equal(productModel.Discontinued, updatedProduct.Discontinued);
+            Assert.Equal(productModel.ReorderLevel, updatedProduct.ReorderLevel);
+            Assert.Equal(productModel.UnitPrice, updatedProduct.UnitPrice);
+            Assert.Equal(productModel.UnitsInStock, updatedProduct.UnitsInStock);
+            Assert.Equal(productModel.UnitsOnOrder, updatedProduct.UnitsOnOrder);
         }
 
         [Fact]
         public async void UpdateProduct_FailedRequestData_Test()
         {
-          try
-          {
-            var productsList = await _northwindClient.GetProductsCollectionAsync();
-            var productFromList = productsList.FirstOrDefault();
-            var productsModel = new ProductsModel(productFromList.Category, productFromList.Discontinued, productFromList.OrderDetails, productFromList.ProductId, string.Empty, string.Empty, productFromList.ReorderLevel, productFromList.Supplier, -1000, 1000, 1000);
-            var response = await _northwindClient.PutUpdateProductAsync(productsModel);
-          }
-          catch (Exception e)
-          {
-            var apiEx = Assert.IsAssignableFrom<ApiException>(e);
-            Assert.True(apiEx.StatusCode == 400);
-            ResponseModel responseModel = JsonConvert.DeserializeObject<ResponseModel>(apiEx.Response);
-            Assert.Equal("The product name field is required.", responseModel.ProductName.FirstOrDefault());
-            Assert.Equal("The quantity per unit field is required.", responseModel.QuantityPerUnit.FirstOrDefault());
-            Assert.Equal("The field UnitPrice must be between 0 and 9999.99.", responseModel.UnitPrice.FirstOrDefault());
-            Assert.Equal("The field UnitsInStock must be between 0 and 200.", responseModel.UnitsInStock.FirstOrDefault());
-            Assert.Equal("The field UnitsOnOrder must be between 0 and 200.", responseModel.UnitsOnOrder.FirstOrDefault());
-          }
+            try
+            {
+                var productsList = await _northwindClient.GetProductsCollectionAsync();
+                var productFromList = productsList.FirstOrDefault();
+                var productsModel = new ProductsModel(productFromList.Category, productFromList.Discontinued, productFromList.OrderDetails, productFromList.ProductId, string.Empty, string.Empty, productFromList.ReorderLevel, productFromList.Supplier, -1000, 1000, 1000);
+                var response = await _northwindClient.PutUpdateProductAsync(productsModel);
+            }
+            catch (Exception e)
+            {
+                var apiEx = Assert.IsAssignableFrom<ApiException>(e);
+                Assert.True(apiEx.StatusCode == 400);
+                ResponseModel responseModel = JsonConvert.DeserializeObject<ResponseModel>(apiEx.Response);
+                Assert.Equal("The product name field is required.", responseModel.ProductName.FirstOrDefault());
+                Assert.Equal("The quantity per unit field is required.", responseModel.QuantityPerUnit.FirstOrDefault());
+                Assert.Equal("The field UnitPrice must be between 0 and 9999.99.", responseModel.UnitPrice.FirstOrDefault());
+                Assert.Equal("The field UnitsInStock must be between 0 and 200.", responseModel.UnitsInStock.FirstOrDefault());
+                Assert.Equal("The field UnitsOnOrder must be between 0 and 200.", responseModel.UnitsOnOrder.FirstOrDefault());
+            }
         }
 
         [Fact]
         public async void DeleteProduct_Test()
         {
-          var productsList = await _northwindClient.GetProductsCollectionAsync();
-          var deletedFirstItemInListId = productsList.FirstOrDefault().ProductId;
+            var productsList = await _northwindClient.GetProductsCollectionAsync();
+            var deletedFirstItemInListId = productsList.FirstOrDefault().ProductId;
 
-          var response = await _northwindClient.DeleteProductAsync(deletedFirstItemInListId);
+            var response = await _northwindClient.DeleteProductAsync(deletedFirstItemInListId);
 
-          Assert.True(response.StatusCode == 200);
-          StreamReader reader = new StreamReader(response.Stream);
-          string jsonString = reader.ReadToEnd();
-          ResponseModel responseModel = JsonConvert.DeserializeObject<ResponseModel>(jsonString);
-          Assert.True(responseModel.Success);
+            Assert.True(response.StatusCode == 200);
+            StreamReader reader = new StreamReader(response.Stream);
+            string jsonString = reader.ReadToEnd();
+            ResponseModel responseModel = JsonConvert.DeserializeObject<ResponseModel>(jsonString);
+            Assert.True(responseModel.Success);
+        }
+
+        [Fact]
+        public async void DeleteProduct_Failed_Test()
+        {
+            try
+            {
+                var response = await _northwindClient.DeleteProductAsync(101123423);
+            }
+            catch (Exception e)
+            {
+                var apiEx = Assert.IsAssignableFrom<ApiException>(e);
+                Assert.True(apiEx.StatusCode == 500);
+            }
         }
 
         [Fact]
@@ -154,7 +168,44 @@ namespace Epam.ASPCore.Northwind.Tests.API
         {
             try
             {
-                var categoryImage = await _northwindClient.GetCategoryImageAsync(100);
+                var response = await _northwindClient.GetCategoryImageAsync(100);
+            }
+            catch (Exception e)
+            {
+                var apiEx = Assert.IsAssignableFrom<ApiException>(e);
+                Assert.True(apiEx.StatusCode == 500);
+            }
+        }
+
+        [Fact]
+        public async void UpdateCategoryImage_Test()
+        {
+            var testDirectory = Directory.GetFiles("../../../TestResources").Where(x => x.Contains("Test_image_category.jpeg")).FirstOrDefault();
+            var testImage = File.ReadAllBytes(testDirectory);
+            MemoryStream ms = new MemoryStream(testImage);
+            FileParameter fileParameter = new FileParameter(ms);
+            var response = await _northwindClient.UpdateCategoryImageAsync(fileParameter, 5);
+
+            Assert.True(response.StatusCode == 200);
+            StreamReader reader = new StreamReader(response.Stream);
+            string jsonString = reader.ReadToEnd();
+            ResponseModel responseModel = JsonConvert.DeserializeObject<ResponseModel>(jsonString);
+            Assert.True(responseModel.Success);
+
+            var categoryImage = await _northwindClient.GetCategoryImageAsync(5);
+            Assert.True(Convert.ToInt32(categoryImage.Headers["Content-Length"].FirstOrDefault()) == testImage.Length);
+        }
+
+        [Fact]
+        public async void UpdateNotExistedCategoryImage_Test()
+        {
+            try
+            {
+                var testDirectory = Directory.GetFiles("../../../TestResources").Where(x => x.Contains("Test_image_category.jpeg")).FirstOrDefault();
+                var testImage = File.ReadAllBytes(testDirectory);
+                MemoryStream ms = new MemoryStream(testImage);
+                FileParameter fileParameter = new FileParameter(ms);
+                var response = await _northwindClient.UpdateCategoryImageAsync(fileParameter, 100);
             }
             catch (Exception e)
             {
