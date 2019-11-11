@@ -15,3 +15,7 @@ function UpdateItem(btn) {
 function CancelAction() {
     window.history.back();
 };
+
+function submitForm(formId) {
+    $("#" + formId).submit();
+}

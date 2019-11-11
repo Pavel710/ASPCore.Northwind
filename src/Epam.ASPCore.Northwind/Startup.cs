@@ -10,6 +10,7 @@ using Epam.ASPCore.Northwind.WebUI.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -48,6 +49,12 @@ namespace Epam.ASPCore.Northwind.WebUI
             }
             services.AddDbContext<NorthwindContext>(options => 
                 options.UseSqlServer(connectionString));
+
+            services.AddDbContext<UserIdentityContext>(options =>
+                options.UseSqlServer(connectionString));
+
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<UserIdentityContext>();
 
             services.AddSwaggerDocument(config =>
             {
@@ -102,6 +109,7 @@ namespace Epam.ASPCore.Northwind.WebUI
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseOpenApi();
             app.UseSwaggerUi3();

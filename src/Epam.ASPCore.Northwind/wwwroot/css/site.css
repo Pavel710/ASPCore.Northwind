@@ -296,4 +296,28 @@ body {
 
 .site-logo img {
     height: 45px;
-} 
+}
+
+/* ----------------
+  User Panel
+---------------------*/
+
+.user-panel button {
+    color: #fff;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+}
+
+.user-panel #manage {
+    padding-right: 0px;
+}
+
+.user-panel #logoutForm {
+    padding-left: 0px;
+}
+
+.user-panel #logout {
+    padding-left: 0px;
+    padding-top: 0px;
+}

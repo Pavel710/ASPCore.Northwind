@@ -22,8 +22,7 @@
             <a asp-area="" asp-controller="Home" asp-action="Index" class="site-logo"><img src="~/images/logo.png"/></a>
             <div class="nav-warp">
                 <div class="user-panel">
-                    <a href="#">Login</a> /
-                    <a href="#">Register</a>
+                    <partial name="_LoginPartial" />
                 </div>
                 <ul class="main-menu main-menu-hamburger">
                     <li>
@@ -60,14 +59,12 @@
         </footer>
     }
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/main.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
