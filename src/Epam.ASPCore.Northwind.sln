@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epam.ASPCore.Northwind.WebU
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epam.ASPCore.Northwind.Domain", "Epam.ASPCore.Northwind.Domain\Epam.ASPCore.Northwind.Domain.csproj", "{D058503B-0374-4935-AC4B-7A18180CA4A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.ASPCore.Northwind.Tests", "Epam.ASPCore.Northwind.Tests\Epam.ASPCore.Northwind.Tests.csproj", "{9BFE06F1-ADDF-4436-B8C5-441F1359F0C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epam.ASPCore.Northwind.Tests", "Epam.ASPCore.Northwind.Tests\Epam.ASPCore.Northwind.Tests.csproj", "{9BFE06F1-ADDF-4436-B8C5-441F1359F0C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
