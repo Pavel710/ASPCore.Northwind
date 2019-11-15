@@ -96,11 +96,13 @@ namespace Epam.ASPCore.Northwind.WebUI
             });
 
             services.Configure<ProductsSettings>(Configuration.GetSection("ProductsSettings"));
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
             services.AddTransient(typeof(INorthwindRepository<>), typeof(NorthwindRepository<>));
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ISupplierService, SupplierService>();
+            services.AddScoped<IEmailService, EmailService>();
             
             services.AddMvc(options => { options.Filters.Add(new LoggActionFilter(true)); })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
