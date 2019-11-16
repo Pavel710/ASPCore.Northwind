@@ -27,7 +27,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Services
                 };
                 mail.To.Add(new MailAddress(email));
 
-                mail.Subject = "Restore password - " + subject;
+                mail.Subject = subject;
                 mail.Body = htmlMessage;
                 mail.IsBodyHtml = true;
                 mail.Priority = MailPriority.High;
