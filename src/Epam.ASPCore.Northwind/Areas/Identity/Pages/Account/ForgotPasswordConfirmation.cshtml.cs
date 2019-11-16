@@ -9,8 +9,12 @@ namespace Epam.ASPCore.Northwind.WebUI.Areas.Identity.Pages.Account
 {
     public class ForgotPasswordConfirmation : PageModel
     {
-        public void OnGet()
+        [BindProperty]
+        public string Message { get; set; }
+
+        public void OnGet(bool success)
         {
+            Message = success ? "Please check your email to reset your password." : "Sorry there was an error when sending emails!";
         }
     }
 }
