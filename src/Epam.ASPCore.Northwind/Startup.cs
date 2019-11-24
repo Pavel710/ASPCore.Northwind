@@ -2,6 +2,7 @@
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
 using Epam.ASPCore.Northwind.WebUI.Filters;
+using Epam.ASPCore.Northwind.WebUI.Infrastructure;
 using Epam.ASPCore.Northwind.WebUI.Middleware;
 using Epam.ASPCore.Northwind.WebUI.Middleware.Options;
 using Epam.ASPCore.Northwind.WebUI.Services;
@@ -16,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Identity.Web.TokenCacheProviders.InMemory;
 using Microsoft.Identity.Web;
 using Serilog;
 
@@ -58,7 +60,11 @@ namespace Epam.ASPCore.Northwind.WebUI
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<UserIdentityContext>();
 
-            services.AddMicrosoftIdentityPlatformAuthentication(Configuration);
+            services.AddMicrosoftIdentityPlatformAuthentication(Configuration)
+                .AddMsal(Configuration, new string[] { Constants.ScopeUserRead })
+                .AddInMemoryTokenCaches();
+
+            services.AddGraphService(Configuration);
 
             services.Configure<IdentityOptions>(options =>
             {
