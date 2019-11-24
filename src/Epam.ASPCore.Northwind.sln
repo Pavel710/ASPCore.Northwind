@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epam.ASPCore.Northwind.Doma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epam.ASPCore.Northwind.Tests", "Epam.ASPCore.Northwind.Tests\Epam.ASPCore.Northwind.Tests.csproj", "{9BFE06F1-ADDF-4436-B8C5-441F1359F0C9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Identity.Web", "Microsoft.Identity.Web\Microsoft.Identity.Web.csproj", "{AD16E73F-0C5B-4E0D-BB9D-589DF0A22198}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{9BFE06F1-ADDF-4436-B8C5-441F1359F0C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BFE06F1-ADDF-4436-B8C5-441F1359F0C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BFE06F1-ADDF-4436-B8C5-441F1359F0C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD16E73F-0C5B-4E0D-BB9D-589DF0A22198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD16E73F-0C5B-4E0D-BB9D-589DF0A22198}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD16E73F-0C5B-4E0D-BB9D-589DF0A22198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD16E73F-0C5B-4E0D-BB9D-589DF0A22198}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

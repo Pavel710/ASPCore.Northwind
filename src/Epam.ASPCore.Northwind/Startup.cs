@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
 using Epam.ASPCore.Northwind.WebUI.Filters;
@@ -7,14 +6,17 @@ using Epam.ASPCore.Northwind.WebUI.Middleware;
 using Epam.ASPCore.Northwind.WebUI.Middleware.Options;
 using Epam.ASPCore.Northwind.WebUI.Services;
 using Epam.ASPCore.Northwind.WebUI.Settings;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Identity.Web;
 using Serilog;
 
 namespace Epam.ASPCore.Northwind.WebUI
@@ -55,6 +57,8 @@ namespace Epam.ASPCore.Northwind.WebUI
 
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<UserIdentityContext>();
+
+            services.AddMicrosoftIdentityPlatformAuthentication(Configuration);
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -104,8 +108,15 @@ namespace Epam.ASPCore.Northwind.WebUI
             services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<IEmailService, EmailService>();
             
-            services.AddMvc(options => { options.Filters.Add(new LoggActionFilter(true)); })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options =>
+                {
+                    var policy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .Build();
+                    options.Filters.Add(new AuthorizeFilter(policy));
+                    options.Filters.Add(new LoggActionFilter(true));
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -124,6 +135,11 @@ namespace Epam.ASPCore.Northwind.WebUI
                 app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
+            app.UseAuthentication();
+
             var path = env.ContentRootPath[0] + ":" + Configuration.GetSection("CacheImagePath").Value;
             app.UseMiddleware<RequestResponseImagesMiddleware>(new ImageOptions
             {
@@ -131,10 +147,6 @@ namespace Epam.ASPCore.Northwind.WebUI
                 MaxCountItem = 10,
                 ExpirationMinutes = 30
             });
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
-            app.UseAuthentication();
 
             app.UseOpenApi();
             app.UseSwaggerUi3();
