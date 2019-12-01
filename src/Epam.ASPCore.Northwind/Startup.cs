@@ -141,11 +141,6 @@ namespace Epam.ASPCore.Northwind.WebUI
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
-            app.UseAuthentication();
-
             var path = env.ContentRootPath[0] + ":" + Configuration.GetSection("CacheImagePath").Value;
             app.UseMiddleware<RequestResponseImagesMiddleware>(new ImageOptions
             {
@@ -153,6 +148,11 @@ namespace Epam.ASPCore.Northwind.WebUI
                 MaxCountItem = 10,
                 ExpirationMinutes = 30
             });
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseOpenApi();
             app.UseSwaggerUi3();

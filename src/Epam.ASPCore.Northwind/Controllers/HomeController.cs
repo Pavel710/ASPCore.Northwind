@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Epam.ASPCore.Northwind.WebUI.Models;
 using Epam.ASPCore.Northwind.WebUI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Microsoft.Graph;
@@ -25,6 +26,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
@@ -66,6 +68,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [AllowAnonymous]
         public IActionResult Error()
         {
             var error = this.HttpContext.Features.Get<IExceptionHandlerFeature>().Error;
