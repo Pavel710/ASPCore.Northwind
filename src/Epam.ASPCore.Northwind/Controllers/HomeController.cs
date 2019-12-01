@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Epam.ASPCore.Northwind.WebUI.Models;
 using Epam.ASPCore.Northwind.WebUI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.Graph;
 using Microsoft.Identity.Web;
@@ -18,17 +20,20 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
     {
         private ITokenAcquisition _tokenAcquisition;
         private readonly WebOptions _webOptions;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public HomeController(ITokenAcquisition tokenAcquisition, IOptions<WebOptions> webOptions)
+        public HomeController(ITokenAcquisition tokenAcquisition, IOptions<WebOptions> webOptions, IHttpContextAccessor httpContextAccessor)
         {
             _tokenAcquisition = tokenAcquisition;
             _webOptions = webOptions.Value;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Index()
         {
+            //var a = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return View();
         }
 

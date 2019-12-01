@@ -113,7 +113,8 @@ namespace Epam.ASPCore.Northwind.WebUI
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<IEmailService, EmailService>();
-            
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddMvc(options =>
                 {
                     var policy = new AuthorizationPolicyBuilder()
