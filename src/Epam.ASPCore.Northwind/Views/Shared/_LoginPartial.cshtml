@@ -1,17 +1,13 @@
-﻿@using System.Security.Claims
-@using Microsoft.AspNetCore.Http
+﻿@using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject IHttpContextAccessor httpContextAccessor
 
-@{
-    var a = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-}
-@if (SignInManager.IsSignedIn(User))
+@if (SignInManager.IsSignedIn(User) || httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
 {
     <div class="row">
-        <a id="manage" class="col-9" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)! /</a>
+        <a id="manage" class="col-9" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name! /</a>
         <form id="logoutForm" class="col-3" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button id="logout" type="submit">Logout</button>
         </form>
