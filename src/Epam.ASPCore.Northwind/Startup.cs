@@ -57,14 +57,17 @@ namespace Epam.ASPCore.Northwind.WebUI
             services.AddDbContext<UserIdentityContext>(options =>
                 options.UseSqlServer(connectionString));
 
+
+
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<UserIdentityContext>();
 
             services.AddMicrosoftIdentityPlatformAuthentication(Configuration)
                 .AddMsal(Configuration, new string[] { Constants.ScopeUserRead })
                 .AddInMemoryTokenCaches();
-
             services.AddGraphService(Configuration);
+
+            services.AddAuthentication(IdentityConstants.ApplicationScheme);
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -115,10 +118,25 @@ namespace Epam.ASPCore.Northwind.WebUI
             services.AddScoped<IEmailService, EmailService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            //services.AddAuthorization(o =>
+            //{
+            //    o.DefaultPolicy = new AuthorizationPolicyBuilder()
+            //        .RequireAuthenticatedUser()
+            //        .AddAuthenticationSchemes("AzureAD", "Identity.Application")
+            //        .Build();
+
+            //    o.AddPolicy("AzurePolicy", new AuthorizationPolicyBuilder()
+            //        .RequireAuthenticatedUser()
+            //        .AddAuthenticationSchemes("AzureAD")
+            //        .RequireClaim("role", "admin")
+            //        .Build());
+            //});
+
             services.AddMvc(options =>
                 {
                     var policy = new AuthorizationPolicyBuilder()
                         .RequireAuthenticatedUser()
+                        //.AddAuthenticationSchemes("AzureAD", "Identity.Application")
                         .Build();
                     options.Filters.Add(new AuthorizeFilter(policy));
                     options.Filters.Add(new LoggActionFilter(true));

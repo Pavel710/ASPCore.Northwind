@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Epam.ASPCore.Northwind.WebUI.Middleware.Options;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 
 namespace Epam.ASPCore.Northwind.WebUI.Middleware
 {
+    [AllowAnonymous]
     public class RequestResponseImagesMiddleware
     {
         private readonly RequestDelegate _next;

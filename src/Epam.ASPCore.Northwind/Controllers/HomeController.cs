@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Epam.ASPCore.Northwind.WebUI.Models;
 using Epam.ASPCore.Northwind.WebUI.Services;
+using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -37,7 +38,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
             return View();
         }
 
-        [AuthorizeForScopes(Scopes = new[] { Infrastructure.Constants.ScopeUserRead })]
+        [Authorize(AuthenticationSchemes = "AzureAD")]
         public async Task<IActionResult> Profile()
         {
             // Initialize the GraphServiceClient. 
