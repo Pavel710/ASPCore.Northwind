@@ -24,7 +24,6 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult GetImage(int id)
         {
             Stream categoryImageStream = _categoryService.GetCategoryImageStream(id);

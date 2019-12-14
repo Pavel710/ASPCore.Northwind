@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Claims;
@@ -6,10 +7,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Epam.ASPCore.Northwind.WebUI.Models;
 using Epam.ASPCore.Northwind.WebUI.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.Graph;
 using Microsoft.Identity.Web;
@@ -22,12 +25,15 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         private ITokenAcquisition _tokenAcquisition;
         private readonly WebOptions _webOptions;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public HomeController(ITokenAcquisition tokenAcquisition, IOptions<WebOptions> webOptions, IHttpContextAccessor httpContextAccessor)
+        public HomeController(ITokenAcquisition tokenAcquisition, IOptions<WebOptions> webOptions, 
+            IHttpContextAccessor httpContextAccessor, SignInManager<IdentityUser> signInManager)
         {
             _tokenAcquisition = tokenAcquisition;
             _webOptions = webOptions.Value;
             _httpContextAccessor = httpContextAccessor;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -37,6 +43,31 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
             //var a = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return View();
         }
+
+        [AllowAnonymous]
+        public IActionResult RedirectToAzure()
+        {
+            var properties = new AuthenticationProperties { RedirectUri = Url.Action("RedirectToAzureCallback") };
+            return new ChallengeResult("AzureAD", properties);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> RedirectToAzureCallback()
+        {
+            var result = await HttpContext.AuthenticateAsync(AzureADDefaults.AuthenticationScheme);
+            if (result.Succeeded)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, "Evgen")
+                };
+                ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+                await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(id));
+                return LocalRedirect("/Categories/Index");
+            }
+            return LocalRedirect("/Home/Index");
+        }
+
 
         [Authorize(AuthenticationSchemes = "AzureAD")]
         public async Task<IActionResult> Profile()
