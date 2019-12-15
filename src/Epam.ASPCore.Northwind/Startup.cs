@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
 using Epam.ASPCore.Northwind.WebUI.Filters;
@@ -9,7 +8,6 @@ using Epam.ASPCore.Northwind.WebUI.Middleware.Options;
 using Epam.ASPCore.Northwind.WebUI.Services;
 using Epam.ASPCore.Northwind.WebUI.Settings;
 using Microsoft.AspNetCore.Authentication.AzureAD.UI;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,7 +15,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,8 +57,6 @@ namespace Epam.ASPCore.Northwind.WebUI
 
             services.AddDbContext<UserIdentityContext>(options =>
                 options.UseSqlServer(connectionString));
-
-
 
             services.AddMicrosoftIdentityPlatformAuthentication(Configuration)
                 .AddMsal(Configuration, new string[] { Constants.ScopeUserRead })

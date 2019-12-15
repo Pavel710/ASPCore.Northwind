@@ -27,7 +27,6 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrator")]
         public IActionResult Add()
         {
             ViewBag.Mod = "Add";
@@ -37,7 +36,6 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
         public IActionResult Add(ProductsModel model)
         {
             if (!ModelState.IsValid)

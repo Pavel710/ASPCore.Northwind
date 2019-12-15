@@ -1,13 +1,11 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using Epam.ASPCore.Northwind.WebUI.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Epam.ASPCore.Northwind.WebUI.Controllers
 {
-    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly ICategoryService _categoryService;

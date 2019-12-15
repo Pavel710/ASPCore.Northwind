@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IHttpContextAccessor httpContextAccessor
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -12,7 +17,7 @@
 </head>
 <body>
     <header class="header-section">
-        <a asp-area="" asp-controller="Home" asp-action="Index" class="site-logo"><img src="~/images/logo.png"/></a>
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="site-logo"><img src="~/images/logo.png" /></a>
         <div class="nav-warp">
             <div class="user-panel">
                 <partial name="_LoginPartial" />
@@ -26,6 +31,11 @@
                         <div class="dropdown-menu">
                             <a asp-area="" asp-controller="Categories" asp-action="Index" class="dropdown-item">Categories</a>
                             <a asp-area="" asp-controller="Products" asp-action="Index" class="dropdown-item">Products</a>
+                            @if ((SignInManager.IsSignedIn(User) || httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                                && User.IsInRole("Administrator"))
+                            {
+                                <a asp-area="" asp-controller="Home" asp-action="UsersTable" class="dropdown-item">Users</a>
+                            }
                         </div>
                     </div>
                 </li>
