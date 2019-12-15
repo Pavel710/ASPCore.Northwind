@@ -1,43 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Epam.ASPCore.Northwind.WebUI.Models;
-using Epam.ASPCore.Northwind.WebUI.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureAD.UI;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.Graph;
-using Microsoft.Identity.Web;
+using Microsoft.Extensions.Configuration;
 using Serilog;
-using Constants = Epam.ASPCore.Northwind.WebUI.Infrastructure.Constants;
 
 namespace Epam.ASPCore.Northwind.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IConfiguration _config;
 
-        public HomeController(ITokenAcquisition tokenAcquisition, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public HomeController(IConfiguration config)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
+            _config = config;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Index()
         {
-            //var a = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return View();
         }
         [HttpPost, AllowAnonymous]
@@ -64,6 +55,25 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
             var result = await HttpContext.AuthenticateAsync(AzureADDefaults.AuthenticationScheme);
             if (result.Succeeded)
             {
+                var userPreferredName = User.FindFirstValue("preferred_username");
+
+                if (_config.GetSection("AdminUserEmail").Value == userPreferredName)
+                {
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, userPreferredName),
+                        new Claim(ClaimTypes.Email, userPreferredName),
+                        new Claim(ClaimTypes.Role, "Administrator"),
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(
+                        claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    await HttpContext.SignInAsync(
+                        AzureADDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity));
+                }
+
                 return RedirectToAction("Index", "Categories");
             }
             return LocalRedirect("/Home/Index");
