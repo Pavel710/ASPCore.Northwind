@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Epam.ASPCore.Northwind.WebUI.Helpers
 {
-    [AllowAnonymous]
     public static class LinkExtensions
     {
         public static IHtmlContent NorthwindImageLink<T>(this IHtmlHelper<T> helper, int imageId, string linkText)

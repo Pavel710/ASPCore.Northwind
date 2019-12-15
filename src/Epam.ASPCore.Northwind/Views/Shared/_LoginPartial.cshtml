@@ -8,7 +8,7 @@
 {
     <div class="row">
         <a id="manage" class="col-9" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name! /</a>
-        <form id="logoutForm" class="col-3" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <form id="logoutForm" class="col-3" asp-action="Logout" asp-controller="Home">
             <button id="logout" type="submit">Logout</button>
         </form>
     </div>

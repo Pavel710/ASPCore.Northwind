@@ -11,7 +11,6 @@ using Serilog;
 
 namespace Epam.ASPCore.Northwind.WebUI.Middleware
 {
-    [AllowAnonymous]
     public class RequestResponseImagesMiddleware
     {
         private readonly RequestDelegate _next;

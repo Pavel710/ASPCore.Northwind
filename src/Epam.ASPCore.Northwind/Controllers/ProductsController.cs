@@ -1,5 +1,6 @@
 ﻿using Epam.ASPCore.Northwind.WebUI.Models;
 using Epam.ASPCore.Northwind.WebUI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Epam.ASPCore.Northwind.WebUI.Controllers
@@ -26,6 +27,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Add()
         {
             ViewBag.Mod = "Add";
@@ -35,6 +37,7 @@ namespace Epam.ASPCore.Northwind.WebUI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Add(ProductsModel model)
         {
             if (!ModelState.IsValid)

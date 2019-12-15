@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Epam.ASPCore.Northwind.Domain.Models;
 using Epam.ASPCore.Northwind.Domain.Repositories;
 using Epam.ASPCore.Northwind.WebUI.Filters;
@@ -8,6 +9,7 @@ using Epam.ASPCore.Northwind.WebUI.Middleware.Options;
 using Epam.ASPCore.Northwind.WebUI.Services;
 using Epam.ASPCore.Northwind.WebUI.Settings;
 using Microsoft.AspNetCore.Authentication.AzureAD.UI;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,15 +63,14 @@ namespace Epam.ASPCore.Northwind.WebUI
 
 
 
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<UserIdentityContext>();
-
             services.AddMicrosoftIdentityPlatformAuthentication(Configuration)
                 .AddMsal(Configuration, new string[] { Constants.ScopeUserRead })
                 .AddInMemoryTokenCaches();
             services.AddGraphService(Configuration);
 
-            services.AddAuthentication(IdentityConstants.ApplicationScheme);
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<UserIdentityContext>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -90,6 +92,7 @@ namespace Epam.ASPCore.Northwind.WebUI
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
                 options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
 
@@ -119,25 +122,11 @@ namespace Epam.ASPCore.Northwind.WebUI
             services.AddScoped<IEmailService, EmailService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            //services.AddAuthorization(o =>
-            //{
-            //    o.DefaultPolicy = new AuthorizationPolicyBuilder()
-            //        .RequireAuthenticatedUser()
-            //        .AddAuthenticationSchemes("AzureAD", "Identity.Application")
-            //        .Build();
-
-            //    o.AddPolicy("AzurePolicy", new AuthorizationPolicyBuilder()
-            //        .RequireAuthenticatedUser()
-            //        .AddAuthenticationSchemes("AzureAD")
-            //        .RequireClaim("role", "admin")
-            //        .Build());
-            //});
-
             services.AddMvc(options =>
                 {
                     var policy = new AuthorizationPolicyBuilder()
                         .RequireAuthenticatedUser()
-                        //.AddAuthenticationSchemes("AzureAD", "Identity.Application")
+                        .AddAuthenticationSchemes(AzureADDefaults.AuthenticationScheme, IdentityConstants.ApplicationScheme)
                         .Build();
                     options.Filters.Add(new AuthorizeFilter(policy));
                     options.Filters.Add(new LoggActionFilter(true));
