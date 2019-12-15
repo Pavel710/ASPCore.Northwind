@@ -13,4 +13,10 @@ ASP .NET Core application.
 | user@user.com  | dont have role  | P@ssword456  | 
 | user1@user1.com  | dont have role  | P@ssword456  |
 
+## User for test local reset password
+| User  | Role | Password (LocalDB) | Password (email) |
+| ------------- | ------------- | ------------- | ------------- |
+| double.pavel.710@outlook.com  | dont have role  | P@ssword123  | P@velp@vel710  |
+
+## Azure users info
 If you want to login with Azure and have role "Administrator" you should change value in "AdminUserEmail" from appsettings.json to your email. User who logedin with Azure dont have a role by default.
