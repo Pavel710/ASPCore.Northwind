@@ -350,6 +350,10 @@ body {
     color: #eb2b63;
 }
 
+.social_icon span.azure_icon {
+    color: #01A6F0;
+}
+
 .social_icon span:hover{
     color: white;
     cursor: pointer;

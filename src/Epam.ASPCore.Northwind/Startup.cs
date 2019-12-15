@@ -61,11 +61,11 @@ namespace Epam.ASPCore.Northwind.WebUI
             services.AddMicrosoftIdentityPlatformAuthentication(Configuration)
                 .AddMsal(Configuration, new string[] { Constants.ScopeUserRead })
                 .AddInMemoryTokenCaches();
-            services.AddGraphService(Configuration);
 
 
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<UserIdentityContext>();
+                .AddEntityFrameworkStores<UserIdentityContext>()
+                .AddDefaultTokenProviders(); ;
 
             services.Configure<IdentityOptions>(options =>
             {
