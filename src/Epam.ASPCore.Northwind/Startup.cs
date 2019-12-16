@@ -62,7 +62,6 @@ namespace Epam.ASPCore.Northwind.WebUI
                 .AddMsal(Configuration, new string[] { Constants.ScopeUserRead })
                 .AddInMemoryTokenCaches();
 
-
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<UserIdentityContext>()
                 .AddDefaultTokenProviders(); ;
