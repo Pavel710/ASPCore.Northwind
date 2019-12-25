@@ -20,3 +20,6 @@ ASP .NET Core application.
 
 ## Azure users info
 If you want to login with Azure and have role "Administrator" you should change value in "AdminUserEmail" from appsettings.json to your email. User who logedin with Azure dont have a role by default.
+
+## Razor view precompilation
+![alt text](https://github.com/Pavel710/ASPCore.Northwind/blob/master/RazorView1.png)
