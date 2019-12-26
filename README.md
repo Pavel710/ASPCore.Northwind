@@ -26,6 +26,3 @@ If you want to login with Azure and have role "Administrator" you should change 
 
 ## Video result about publish app to IIS and run Linux docker container
 https://www.youtube.com/watch?v=wBVz4gk8_ag
-
-## Azure publish
-https://aspcorenorthwind.azurewebsites.net/
