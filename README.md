@@ -23,6 +23,3 @@ If you want to login with Azure and have role "Administrator" you should change 
 
 ## Razor view precompilation
 ![alt text](https://github.com/Pavel710/ASPCore.Northwind/blob/master/RazorView1.png)
-
-## Video result about publish app to IIS and run Linux docker container
-https://www.youtube.com/watch?v=wBVz4gk8_ag
